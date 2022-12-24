@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Stevebauman\Location\Facades\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,12 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return view('auth.test');
+    $currentUserInfo = Location::get();
+    $currentUserInfo = strtolower($currentUserInfo->countryCode);
+    
+    return view('test', [
+        'currentUserInfo' => $currentUserInfo
+    ]);
 });
 
 Route::get('/dashboard', function () {

@@ -13,16 +13,19 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('img/pcpartpicker.png') }}">
 
-    <title>PCPP - Login</title>
+    <title>PCPP - Home</title>
 </head>
 <body>
-    <div class="bg-gray-900">
-        {{-- 
+    <div class="bg-gray-900 w-screen">
+        
+        {{-- u can replace the country (us) with a variable --}}
+        <x-dynamic-component component="flag-country-{{ strtolower($currentUserInfo) }}" class="w-24"/>
 
-                |    TO DO: ADD ROUTE TO HOME PAGE LINK WHEN DONE
-                V
-        --}}
-        <a href="" class="fixed text-white underline m-2 ml-3">Homepage</a>
+
+
+
+
+
 
         {{-- Middle section --}}
         <div class="h-screen flex justify-center items-center flex-col">
@@ -64,6 +67,7 @@
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 56 56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><path d="M 28.0000 4.2578 C 21.4609 4.2578 15.4844 8.9219 15.4844 18.5078 L 15.4844 24.1328 C 12.9531 24.4375 11.7109 25.9610 11.7109 28.9610 L 11.7109 46.8438 C 11.7109 50.2188 13.2578 51.7422 16.375 51.7422 L 39.625 51.7422 C 42.7422 51.7422 44.2891 50.2188 44.2891 46.8438 L 44.2891 28.9375 C 44.2891 25.9375 43.0469 24.3437 40.5156 24.0625 L 40.5156 18.5078 C 40.5156 8.9219 34.5391 4.2578 28.0000 4.2578 Z M 19.2578 17.9922 C 19.2578 11.4532 23.1484 7.8672 28.0000 7.8672 C 32.8515 7.8672 36.7422 11.4532 36.7422 17.9922 L 36.7422 24.0391 L 19.2578 24.0625 Z" clip-rule="evenodd"></path></svg>
                         </div>
                         <input type="password" id="password" name="password" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 placeholder-gray-400" placeholder="********" required autocomplete="current-password">
+                        
                     </div>
 
                     {{-- Remember me --}}

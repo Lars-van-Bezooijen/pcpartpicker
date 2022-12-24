@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('img/pc_store_logo.png') }}">
+    <link rel="icon" href="{{ asset('img/pcpartpicker.png') }}">
 
     <title>PCPP - Register</title>
 </head>
@@ -27,7 +27,7 @@
         {{-- Middle section --}}
         <div class="h-screen flex justify-center items-center flex-col">
             {{-- Logo --}}
-            <img class="w-24 mb-8" src="{{ asset('img/pc_store_logo.png') }}" alt="">
+            <img class="w-24 mb-8" src="{{ asset('img/pcpartpicker.png') }}" alt="">
             
             {{-- Card --}}
             <div class="bg-gray-800 p-4 rounded-md w-auto">
