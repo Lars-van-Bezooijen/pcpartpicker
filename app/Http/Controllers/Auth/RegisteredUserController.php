@@ -38,15 +38,30 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'avatar' => ['image', 'mimes:jpeg,png,jpg,svg', 'max:2048'],
         ]);
 
+        // Get users location
         $country = Location::get();
+
+        if($request->avatar == null) 
+        {
+            $imageName = 'default.png';
+        } 
+        else 
+        {
+            // Get image name and extension
+            $imageName = time().'.'.$request->avatar->extension();
+            // Move image to public folder
+            $request->avatar->move(public_path('img/avatars'), $imageName);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'country_code' => strtolower($country->countryCode),
+            'avatar' => $imageName,
         ]);
 
         event(new Registered($user));

@@ -13,6 +13,9 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('img/pcpartpicker.png') }}">
 
+    <!-- Flowbite JS -->
+    <script src="../path/to/flowbite/dist/flowbite.js"></script>
+
     <title>PCPP - Register</title>
 </head>
 <body>
@@ -43,9 +46,9 @@
                 @endif
 
                 {{-- Form --}}
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
-            
+
                     {{-- Name --}}
                     <label for="name" class="block mb-2 text-sm font-medium text-white">Your name</label>
                     <div class="relative mb-5">
@@ -79,8 +82,15 @@
                         <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 56 56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><path d="M 28.0000 4.2578 C 21.4609 4.2578 15.4844 8.9219 15.4844 18.5078 L 15.4844 24.1328 C 12.9531 24.4375 11.7109 25.9610 11.7109 28.9610 L 11.7109 46.8438 C 11.7109 50.2188 13.2578 51.7422 16.375 51.7422 L 39.625 51.7422 C 42.7422 51.7422 44.2891 50.2188 44.2891 46.8438 L 44.2891 28.9375 C 44.2891 25.9375 43.0469 24.3437 40.5156 24.0625 L 40.5156 18.5078 C 40.5156 8.9219 34.5391 4.2578 28.0000 4.2578 Z M 19.2578 17.9922 C 19.2578 11.4532 23.1484 7.8672 28.0000 7.8672 C 32.8515 7.8672 36.7422 11.4532 36.7422 17.9922 L 36.7422 24.0391 L 19.2578 24.0625 Z" clip-rule="evenodd"></path></svg>
                         </div>
-                        <input type="password" id="password" name="password_confirmation" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 placeholder-gray-400" placeholder="********" required>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 placeholder-gray-400" placeholder="********" required>
                     </div>
+
+                    {{-- Avatar --}}
+                    <label class="block mb-2 text-sm font-medium text-white" for="avatar">Upload avatar <span class="text-gray-400">(Can be done at a later time.)</span></label>
+                    <div class="relative mb-5">
+                        <input class=" mb-2 block w-full text-sm text-gray-400 border border-gray-600 rounded-lg cursor-pointer bg-gray-700  focus:outline-none placeholder-gray-400" id="avatar" name="avatar" type="file">
+                        <p class="text-white text-sm">JPEG, JPG, PNG or SVG (MAX. 512x512)</p>
+                    </div> 
                     
                     {{-- Login instead & Register --}}
                     <div class="text-right ml-32">
