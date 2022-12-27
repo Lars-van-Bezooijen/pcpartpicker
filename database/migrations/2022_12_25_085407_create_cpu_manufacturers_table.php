@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cpu_integrated_graphics', function (Blueprint $table) {
+        Schema::create('cpu_manufacturers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cpu_integrated_graphics');
+        Schema::dropIfExists('cpu_manufacturers');
     }
 };

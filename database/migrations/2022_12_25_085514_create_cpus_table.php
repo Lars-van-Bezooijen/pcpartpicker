@@ -13,28 +13,28 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cpu', function (Blueprint $table) {
+        Schema::create('cpus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('manufacturer_id')
                 ->references('id')
-                ->on('cpu_manufacturer');
+                ->on('cpu_manufacturers');
             $table->foreignId('series_id')
                 ->references('id')
                 ->on('cpu_series');
-            $table->foreignId('integrated_graphics_id')
-                ->references('id')
-                ->on('cpu_integrated_graphics');
             $table->foreignId('socket_id')
                 ->references('id')
                 ->on('cpu_sockets');
             $table->string('name');
+            $table->string('image');
             $table->double('price');
             $table->integer('core_count');
             $table->float('core_clock');
-            $table->float('boost_clock');
-            $table->integer('tdp');
-            $table->boolean('smt');
+            $table->float('boost_clock')
+                ->nullable();
+            $table->integer('tdp')->nullable();
+            $table->boolean('smt')->nullable();
             $table->boolean('has_cooler');
+            $table->boolean('integrated_graphics');
             $table->timestamps();
         });
     }
@@ -46,6 +46,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cpu');
+        Schema::dropIfExists('cpus');
     }
 };
