@@ -7,9 +7,34 @@ use App\Models\Cpu;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function cpu_index()
     {
-        $cpus = Cpu::all();
+
+        $integrated_graphics = null;
+
+
+        if(isset($_GET['integrated_graphics'])) {$integrated_graphics = $_GET['integrated_graphics'];}
+
+        if(isset($integrated_graphics)) 
+        {
+            if($integrated_graphics == 'all') {
+                $cpus = Cpu::all();
+            } else {
+                $cpus = Cpu::where('integrated_graphics', $integrated_graphics)->get();
+            }
+        } 
+
+        else 
+        {
+            $cpus = Cpu::all();
+        }
+
+
+
+
+
+
+
         return view('products.cpu', [
             'cpus' => $cpus
         ]);

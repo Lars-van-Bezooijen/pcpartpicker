@@ -14,7 +14,7 @@
                 </div>
                 
                 {{-- Table of parts --}}
-                <div class="overflow-x-auto relative rounded-md">
+                {{-- <div class="overflow-x-auto relative rounded-md">
                     <table class="w-full text-sm text-left text-gray-400">
                         <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                             <tr>
@@ -56,7 +56,8 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> --}}
+
 
             </div>
         </div>

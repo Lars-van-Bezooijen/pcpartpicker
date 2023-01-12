@@ -5,25 +5,39 @@
     <div class="grid grid-cols-8 w-screen">
 
         {{-- Sidebar --}}
-        <div class="py-12 col-span-1">
+        <div class="py-12 col-span-2">
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-white min-w-48">
-                        <p>Filters</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
+                        <p class="font-bold mb-2 text-2xl">Filters</p>
+                        <form action="" method="GET">
+                            <div class="form-control pb-2 mb-4 border-b border-white">
+                                <p>Integrated Graphics</p>
+                                <div>
+                                    <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all') checked @endif>
+                                    <label for="integrated_graphics_all">All</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="integrated_graphics" value="1" id="integrated_graphics_yes" @if(request()->integrated_graphics == '1') checked @endif>
+                                    <label for="integrated_graphics_yes">Yes</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="integrated_graphics" value="0" id="integrated_graphics_no" @if(request()->integrated_graphics == '0') checked @endif>
+                                    <label for="integrated_graphics_no">No</label>
+                                </div>
+                            </div>
+
+
+                            <input type="submit" value="test">
+
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
         {{-- Main section --}}
-        <div class="py-12 col-span-7">
+        <div class="py-12 col-span-6">
             <div class="sm:px-6 lg:px-8">
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-white">

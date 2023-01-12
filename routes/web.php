@@ -16,7 +16,7 @@ use App\Http\Controllers\ProductsController;
 |
 */
 
-Route::get('/products/cpu', [ProductsController::class, 'index'])->name('products.cpu.index');
+Route::get('/products/cpu', [ProductsController::class, 'cpu_index'])->name('products.cpu.index');
 
 Route::get('/', function () {
     return view('welcome');
