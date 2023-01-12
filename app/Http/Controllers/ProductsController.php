@@ -36,7 +36,9 @@ class ProductsController extends Controller
 
 
         return view('products.cpu', [
-            'cpus' => $cpus
+            'cpus' => $cpus,
+            'cheapestCpu' => $cheapestCpu,
+            'mostExpensiveCpu' => $mostExpensiveCpu
         ]);
     }
 }

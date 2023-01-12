@@ -12,9 +12,10 @@
                         <p class="font-bold mb-2 text-2xl">Filters</p>
                         <form action="" method="GET">
                             <div class="form-control pb-2 mb-4 border-b border-white">
+                                {{-- Integrated Graphics filter --}}
                                 <p>Integrated Graphics</p>
                                 <div>
-                                    <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all') checked @endif>
+                                    <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all' || !isset(request()->integrated_graphics) ) checked @endif>
                                     <label for="integrated_graphics_all">All</label>
                                 </div>
                                 <div>
@@ -24,6 +25,17 @@
                                 <div>
                                     <input type="radio" name="integrated_graphics" value="0" id="integrated_graphics_no" @if(request()->integrated_graphics == '0') checked @endif>
                                     <label for="integrated_graphics_no">No</label>
+                                </div>
+                            </div>
+                            {{-- Price filter --}}
+                            <div class="form-control pb-2 mb-4 border-b border-white">
+                                <p>Price / Min - Max</p>
+                                <div class="price_slider">
+                                    <input type="range" name="price_min" id="price_min" min="0" max="1000" value="{{ request()->price_min ?? 0 }}" step="1" oninput="price_min_output.value = price_min.value">
+                                    <input type="range" name="price_max" id="price_max" min="0" max="1000" value="{{ request()->price_max ?? 1000 }}" step="1" oninput="price_max_output.value = price_max.value">
+                                    <input type="number" id="price_min_output" step="1">
+
+                                    <input type="number" id="price_max_output" step="1">
                                 </div>
                             </div>
 
@@ -48,6 +60,14 @@
                             </div>
                         </div>
 
+                        {{-- Check if there are CPU's found --}}
+                        @if(count($cpus) == 0)
+                            {{-- warning box --}}
+                            <div class="bg-red-500 text-white p-4 rounded-md mb-4">
+                                <p class="font-bold text-2xl">Oh no! No CPU's found :(</p>
+                                <p>Try to change your filters</p>
+                            </div>
+                        @else
                         {{-- Table of parts --}}
                         <div class="overflow-x-auto relative rounded-md">
                             <table class="w-full text-sm text-left text-gray-400">
@@ -128,6 +148,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        @endif
 
                     </div>
                 </div>
@@ -136,6 +157,24 @@
         
     </div>
 </div>
+
+<script>
+    // Price slider
+    var price_min = document.getElementById("price_min");
+    var price_max = document.getElementById("price_max");
+    var output_min = document.getElementById("price_min_output");
+    var output_max = document.getElementById("price_max_output");
+    output_min.innerHTML = price_min.value;
+    output_max.innerHTML = price_max.value;
+
+    price_min.oninput = function() {
+        output_min.value = this.value;
+    }
+    price_max.oninput = function() {
+        output_max.value = this.value;
+    }
+
+</script>
 
 {{-- Footer --}}
 @include('layouts.footer')
