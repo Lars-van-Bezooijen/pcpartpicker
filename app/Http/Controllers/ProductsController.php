@@ -11,6 +11,8 @@ class ProductsController extends Controller
     {
 
         $integrated_graphics = null;
+        $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
+        $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
 
 
         if(isset($_GET['integrated_graphics'])) {$integrated_graphics = $_GET['integrated_graphics'];}
@@ -28,6 +30,7 @@ class ProductsController extends Controller
         {
             $cpus = Cpu::all();
         }
+
 
 
 
