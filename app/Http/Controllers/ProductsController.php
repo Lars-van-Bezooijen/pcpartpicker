@@ -14,24 +14,25 @@ class ProductsController extends Controller
         $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
         $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
 
-
+        // Integrated Graphics Filter
         if(isset($_GET['integrated_graphics'])) {$integrated_graphics = $_GET['integrated_graphics'];}
 
-        if(isset($integrated_graphics)) 
+        if($integrated_graphics == '1' || $integrated_graphics == '0')
         {
-            if($integrated_graphics == 'all') {
-                $cpus = Cpu::all();
-            } else {
-                $cpus = Cpu::where('integrated_graphics', $integrated_graphics)->get();
-            }
+            $filters[] = ['integrated_graphics', '=', $integrated_graphics];
         } 
+        
 
-        else 
+        // Query Builder
+        $cpus = "Cpu::";
+        if(isset($filters))
+        {
+            $cpus = Cpu::where($filters)->get();
+        }   
+        else
         {
             $cpus = Cpu::all();
         }
-
-
 
 
 
