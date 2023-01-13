@@ -59,7 +59,7 @@ class CpuSeeder extends Seeder
             'core_clock' => 3.6,
             'boost_clock' => 4.4,
             'tdp' => 65,
-            'smt' => true,
+            'smt' => false,
             'has_cooler' => false,
             'integrated_graphics' => true,
         ]);
@@ -75,7 +75,7 @@ class CpuSeeder extends Seeder
             'core_clock' => 3.8,
             'boost_clock' => 4.6,
             'tdp' => 105,
-            'smt' => true,
+            'smt' => false,
             'has_cooler' => false,
             'integrated_graphics' => true,
         ]);
@@ -107,7 +107,7 @@ class CpuSeeder extends Seeder
             'core_clock' => 3.6,
             'boost_clock' => 5.0,
             'tdp' => 125,
-            'smt' => true,
+            'smt' => false,
             'has_cooler' => false,
             'integrated_graphics' => true,
         ]);

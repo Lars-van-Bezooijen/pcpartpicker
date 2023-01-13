@@ -24,9 +24,33 @@
                                     </div>
                                     <input name="search" type="search" id="search_input" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" placeholder="Enter product name..." @if(request()->search) value="{{ request()->search }}" @endif)>
                                 </div>
+
+                                {{-- Submit button --}}
+                                <button type="submit" class="mb-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Apply filter</button>
+
+                                {{-- Price filter --}}
+                                <div class="form-control pb-2 mb-4 border-b border-white">
+                                    <p class="font-bold">Price</p>
+                                    <div class="mb-2">
+                                        @if(request()->price_min && request()->price_max)
+                                            <range-selector min-range="{{ $cheapestCpu }}" max-range="{{ $mostExpensiveCpu }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" label-before="€"  event-name-to-emit-on-change="price_slider" preset-min="{{ request()->price_min }}" preset-max="{{ request()->price_max }}"/>
+                                        @else
+                                            <range-selector min-range="{{ $cheapestCpu }}" max-range="{{ $mostExpensiveCpu }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" label-before="€"  event-name-to-emit-on-change="price_slider"/>
+                                        @endif
+                                    </div>
+
+                                    @if(request()->price_min && request()->price_max)
+                                        <input type="hidden" value="{{ request()->price_min }}" name="price_min" id="price_min">
+                                        <input type="hidden" value="{{ request()->price_max }}" name="price_max" id="price_max">
+                                    @else
+                                        <input type="hidden" value="{{ $cheapestCpu }}" name="price_min" id="price_min">
+                                        <input type="hidden" value="{{ $mostExpensiveCpu }}" name="price_max" id="price_max">
+                                    @endif
+                                </div>
+                            
                                 
                                 {{-- Integrated Graphics filter --}}
-                                <p>Integrated Graphics</p>
+                                <p class="font-bold">Integrated Graphics</p>
                                 <div>
                                     <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all' || !isset(request()->integrated_graphics) ) checked @endif>
                                     <label for="integrated_graphics_all">All</label>
@@ -40,21 +64,24 @@
                                     <label for="integrated_graphics_no">No</label>
                                 </div>
                             </div>
-                            {{-- Price filter --}}
-                            {{-- <div class="form-control pb-2 mb-4 border-b border-white">
-                                <p>Price / Min - Max</p>
-                                <div class="price_slider">
-                                    <input type="range" name="price_min" id="price_min" min="0" max="{{ $mostExpensiveCpu }}" value="{{ request()->price_min ?? 0 }}" step="0.1">
-                                    <input type="range" name="price_max" id="price_max" min="0" max="{{ $mostExpensiveCpu }}" value="{{ request()->price_max ?? 1000 }}" step="0.1">
-                                    <input type="number" id="price_min_output" step="0.1" @if(!request()->price_min) value="0" @endif>
-
-                                    <input type="number" id="price_max_output" step="0.1" @if(!request()->price_max) value="{{ $mostExpensiveCpu }}" @endif>
+                            {{-- SMT Filter --}}
+                            <div class="form-control pb-2 mb-4 border-b border-white">
+                                <p class="font-bold">SMT</p>
+                                <div>
+                                    <input type="radio" name="smt" value="all" id="smt_all" @if(request()->smt == 'all' || !isset(request()->smt) ) checked @endif>
+                                    <label for="smt_all">All</label>
                                 </div>
-                            </div> --}}
-
-                            <div>
-                                
+                                <div>
+                                    <input type="radio" name="smt" value="1" id="smt_yes" @if(request()->smt == '1') checked @endif>
+                                    <label for="smt_yes">Yes</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="smt" value="0" id="smt_no" @if(request()->smt == '0') checked @endif>
+                                    <label for="smt_no">No</label>
+                                </div>
                             </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -172,34 +199,27 @@
     </div>
 </div>
 
+{{-- Double handle slider --}}
+<script 
+  type="text/javascript" 
+  src="https://cdn.jsdelivr.net/gh/maxshuty/accessible-web-components@latest/dist/simpleRange.min.js">
+</script>
+
 <script>
+    
     // Submit filter form on input
-    var filter_form = document.getElementById("filter_form");
-    var search_input = document.getElementById("search_input");
-
-    filter_form.oninput = function() {
-        // Dont submit the search input
-        if (event.target != search_input) {
-            filter_form.submit();
-        }
-    }
-
-    // Price slider
     var price_min = document.getElementById("price_min");
     var price_max = document.getElementById("price_max");
-    var output_min = document.getElementById("price_min_output");
-    var output_max = document.getElementById("price_max_output");
-    output_min.innerHTML = price_min.value;
-    output_max.innerHTML = price_max.value;
 
-    price_min.oninput = function() {
-        output_min.value = this.value;
-    }
-    price_max.oninput = function() {
-        output_max.value = this.value;
-    }
+    // Price slider
+    window.addEventListener('price_slider', (e) => {
+        const data = e.detail;
+        price_min.value = data.minRangeValue;
+        price_max.value = data.maxRangeValue;
+        filter_form.submit();
+    });
 
-</script>
+</script>       
 
 {{-- Footer --}}
 @include('layouts.footer')
