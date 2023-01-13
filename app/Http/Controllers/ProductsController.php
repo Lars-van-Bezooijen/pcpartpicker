@@ -14,6 +14,10 @@ class ProductsController extends Controller
         $smt = null;
         $price_min = null;
         $price_max = null;
+        $core_min = null;
+        $core_max = null;
+        $tdp_min = null;
+        $tdp_max = null;
 
         // Get Cheapest and Most Expensive CPU Prices
         $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
@@ -22,6 +26,12 @@ class ProductsController extends Controller
         $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
         // round up to full dollar
         $mostExpensiveCpu->price = ceil($mostExpensiveCpu->price);
+
+        $lowestCoreCount = Cpu::orderBy('core_count', 'asc')->first();
+        $highestCoreCount = Cpu::orderBy('core_count', 'desc')->first();
+
+        $highestTdp = Cpu::orderBy('tdp', 'desc')->first();
+        $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
 
         // Search Filter
         if(isset($_GET['search']))
@@ -38,6 +48,26 @@ class ProductsController extends Controller
         {
             $filters[] = ['price', '>=', $price_min];
             $filters[] = ['price', '<=', $price_max];
+        }
+
+        // Core Count Filter
+        if(isset($_GET['core_min'])) {$core_min = $_GET['core_min'];}
+        if(isset($_GET['core_max'])) {$core_max = $_GET['core_max'];}
+
+        if($core_min != null && $core_max != null)
+        {
+            $filters[] = ['core_count', '>=', $core_min];
+            $filters[] = ['core_count', '<=', $core_max];
+        }
+
+        // TDP Filter
+        if(isset($_GET['tdp_min'])) {$tdp_min = $_GET['tdp_min'];}
+        if(isset($_GET['tdp_max'])) {$tdp_max = $_GET['tdp_max'];}
+
+        if($tdp_min != null && $tdp_max != null)
+        {
+            $filters[] = ['tdp', '>=', $tdp_min];
+            $filters[] = ['tdp', '<=', $tdp_max];
         }
 
         // Integrated Graphics Filter
@@ -74,7 +104,11 @@ class ProductsController extends Controller
         return view('products.cpu', [
             'cpus' => $cpus,
             'cheapestCpu' => $cheapestCpu->price,
-            'mostExpensiveCpu' => $mostExpensiveCpu->price
+            'mostExpensiveCpu' => $mostExpensiveCpu->price,
+            'lowestCoreCount' => $lowestCoreCount->core_count,
+            'highestCoreCount' => $highestCoreCount->core_count,
+            'highestTdp' => $highestTdp->tdp,
+            'lowestTdp' => $lowestTdp->tdp,
         ]);
     }
 }

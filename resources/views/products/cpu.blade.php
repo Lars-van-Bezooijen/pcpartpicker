@@ -47,7 +47,46 @@
                                         <input type="hidden" value="{{ $mostExpensiveCpu }}" name="price_max" id="price_max">
                                     @endif
                                 </div>
-                            
+
+                                {{-- Core count filter --}}
+                                <div class="form-control pb-2 mb-4 border-b border-white">
+                                    <p class="font-bold">Core count</p>
+                                    <div class="mb-2">
+                                        @if(request()->core_min && request()->core_max)
+                                            <range-selector min-range="{{ $lowestCoreCount }}" max-range="{{ $highestCoreCount }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="core_count_slider" preset-min="{{ request()->core_min }}" preset-max="{{ request()->core_max }}"/>
+                                        @else
+                                            <range-selector min-range="{{ $lowestCoreCount }}" max-range="{{ $highestCoreCount }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="core_count_slider"/>
+                                        @endif
+                                    </div>
+
+                                    @if(request()->core_min && request()->core_max)
+                                        <input type="hidden" value="{{ request()->core_min }}" name="core_min" id="core_min">
+                                        <input type="hidden" value="{{ request()->core_max }}" name="core_max" id="core_max">
+                                    @else
+                                        <input type="hidden" value="{{ $lowestCoreCount }}" name="core_min" id="core_min">
+                                        <input type="hidden" value="{{ $highestCoreCount }}" name="core_max" id="core_max">
+                                    @endif
+                                </div>
+
+                                {{-- TDP filter --}}
+                                <div class="form-control pb-2 mb-4 border-b border-white">
+                                    <p class="font-bold">TDP</p>
+                                    <div class="mb-2">
+                                        @if(request()->tdp_min && request()->tdp_max)
+                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" preset-min="{{ request()->tdp_min }}" preset-max="{{ request()->tdp_max }}"/>
+                                        @else
+                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" label-after=" W"/>
+                                        @endif
+                                    </div>
+
+                                    @if(request()->tdp_min && request()->tdp_max)
+                                        <input type="hidden" value="{{ request()->tdp_min }}" name="tdp_min" id="tdp_min">
+                                        <input type="hidden" value="{{ request()->tdp_max }}" name="tdp_max" id="tdp_max">
+                                    @else
+                                        <input type="hidden" value="{{ $lowestCoreCount }}" name="tdp_min" id="tdp_min">
+                                        <input type="hidden" value="{{ $highestCoreCount }}" name="tdp_max" id="tdp_max">
+                                    @endif
+                                </div>
                                 
                                 {{-- Integrated Graphics filter --}}
                                 <p class="font-bold">Integrated Graphics</p>
@@ -210,12 +249,29 @@
     // Submit filter form on input
     var price_min = document.getElementById("price_min");
     var price_max = document.getElementById("price_max");
+    var core_min = document.getElementById("core_min");
 
     // Price slider
     window.addEventListener('price_slider', (e) => {
         const data = e.detail;
         price_min.value = data.minRangeValue;
         price_max.value = data.maxRangeValue;
+        filter_form.submit();
+    });
+
+    // Core count slider
+    window.addEventListener('core_count_slider', (e) => {
+        const data = e.detail;
+        core_min.value = data.minRangeValue;
+        core_max.value = data.maxRangeValue;
+        filter_form.submit();
+    });
+
+    // TDP slider
+    window.addEventListener('tdp_slider', (e) => {
+        const data = e.detail;
+        tdp_min.value = data.minRangeValue;
+        tdp_max.value = data.maxRangeValue;
         filter_form.submit();
     });
 
