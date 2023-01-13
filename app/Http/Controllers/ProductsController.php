@@ -14,6 +14,13 @@ class ProductsController extends Controller
         $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
         $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
 
+        // Search Filter
+        if(isset($_GET['search']))
+        {
+            $search = $_GET['search'];
+            $filters[] = ['name', 'like', '%'.$search.'%'];
+        }
+
         // Integrated Graphics Filter
         if(isset($_GET['integrated_graphics'])) {$integrated_graphics = $_GET['integrated_graphics'];}
 
