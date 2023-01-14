@@ -22,7 +22,7 @@
                 |    TO DO: ADD ROUTE TO HOME PAGE LINK WHEN DONE
                 V
         --}}
-        <a href="" class="fixed text-white underline m-2 ml-3">Homepage</a>
+        <a href="" class="text-white underline p-2 relative top-2">Homepage</a>
 
         {{-- Middle section --}}
         <div class="h-screen flex justify-center items-center flex-col">
