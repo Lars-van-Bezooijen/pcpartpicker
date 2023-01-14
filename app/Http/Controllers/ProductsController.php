@@ -7,7 +7,7 @@ use App\Models\Cpu;
 
 class ProductsController extends Controller
 {
-    public function cpu_index()
+    public function cpu_search()
     {
 
         $integrated_graphics = null;
@@ -101,7 +101,7 @@ class ProductsController extends Controller
 
 
 
-        return view('products.cpu', [
+        return view('pages.cpu.search', [
             'cpus' => $cpus,
             'cheapestCpu' => $cheapestCpu->price,
             'mostExpensiveCpu' => $mostExpensiveCpu->price,
@@ -109,6 +109,14 @@ class ProductsController extends Controller
             'highestCoreCount' => $highestCoreCount->core_count,
             'highestTdp' => $highestTdp->tdp,
             'lowestTdp' => $lowestTdp->tdp,
+        ]);
+    }
+
+    public function cpu_show($id)
+    {
+        $cpu = Cpu::find($id);
+        return view('pages.cpu.show', [
+            'cpu' => $cpu
         ]);
     }
 }

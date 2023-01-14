@@ -73,10 +73,10 @@
                             
                             {{-- Dropdown --}}
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('profile.edit')" class="text-white bg-gray-800 hover:bg-gray-700">
+                                <x-dropdown-link :href="route('profile.edit')" class="text-white bg-gray-800 hover:bg-slate-700">
                                     My Lists
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('profile.edit')" class="text-white bg-gray-800 hover:bg-gray-700">
+                                <x-dropdown-link :href="route('profile.edit')" class="text-white bg-gray-800 hover:bg-slate-700">
                                     Profile
                                 </x-dropdown-link>
         
@@ -85,7 +85,7 @@
                                     @csrf
         
                                     <x-dropdown-link :href="route('logout')"
-                                            class="border-t border-gray-700 text-red-500 bg-gray-800 hover:bg-gray-700"
+                                            class="border-t border-gray-700 text-red-500 bg-gray-800 hover:bg-slate-700"
                                             onclick="event.preventDefault();
                                                         this.closest('form').submit();">
                                         Log Out

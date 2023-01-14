@@ -11,7 +11,7 @@
                     <div class="p-6 text-white min-w-48">
                         <div class="flex justify-between items-end mb-4">
                             <p class="font-bold text-2xl">Filters</p>
-                            <a class="underline" href="{{ route('products.cpu.index') }}">Reset</a>
+                            <a class="underline" href="{{ route('products.cpu.search') }}">Reset</a>
                         </div>
                         
                         <form action="" method="GET" id="filter_form">
@@ -73,7 +73,7 @@
                                     <p class="font-bold">TDP</p>
                                     <div class="mb-2">
                                         @if(request()->tdp_min && request()->tdp_max)
-                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" preset-min="{{ request()->tdp_min }}" preset-max="{{ request()->tdp_max }}"/>
+                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" preset-min="{{ request()->tdp_min }}" preset-max="{{ request()->tdp_max }}" label-after=" W"/>
                                         @else
                                             <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" label-after=" W"/>
                                         @endif
@@ -186,7 +186,7 @@
                                             <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-white font-bold w-80">
                                                 <div class="flex items-center">
                                                     <img src="{{ asset('img/products/' . $cpu->image) }}" alt="" class="w-12 mr-2">
-                                                    <p>{{ $cpu->name }}</p>
+                                                    <a class="hover:text-blue-500 hover:underline" href="{{ route('products.cpu.show', $cpu->id) }}">{{ $cpu->name }}</a>
                                                 </div>
                                             </th>
                                             <td class="py-4 px-6 font-medium whitespace-nowrap text-white w-36">
@@ -219,7 +219,7 @@
                                                 <p class="w-fit py-4 px-6 font-medium whitespace-nowrap text-white">€{{ number_format($cpu->price, 2, ',', '.') }}</p>
                                             </td>
                                             <td class="py-4 px-6 font-medium whitespace-nowrap text-white w-60">
-                                                <a href="#">
+                                                <a href="{{ route('builder.cpu.add', $cpu->id) }}">
                                                     <button class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Select</button>
                                                 </a>
                                             </td>
