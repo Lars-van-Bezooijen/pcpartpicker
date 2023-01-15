@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cpu;
+use App\Models\CpuManufacturer;
 
 class ProductsController extends Controller
 {
@@ -18,6 +19,9 @@ class ProductsController extends Controller
         $core_max = null;
         $tdp_min = null;
         $tdp_max = null;
+        $manufacturer = null;
+
+
 
         // Get Cheapest and Most Expensive CPU Prices
         $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
@@ -32,6 +36,10 @@ class ProductsController extends Controller
 
         $highestTdp = Cpu::orderBy('tdp', 'desc')->first();
         $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
+
+        $manufacturers = CpuManufacturer::all();
+
+
 
         // Search Filter
         if(isset($_GET['search']))
@@ -77,6 +85,30 @@ class ProductsController extends Controller
         {
             $filters[] = ['integrated_graphics', '=', $integrated_graphics];
         } 
+        
+        // Manufacturer Filter
+        if(isset($_GET['manufacturer'])) 
+        {
+            $manufacturer = $_GET['manufacturer'];
+
+            // Loop through manufacturer array and add to filters array
+            foreach($manufacturer as $m)
+            {
+                if($m == 'all')
+                {
+                    // Add all manufacturer ids to array if 'all'
+                    foreach($manufacturers as $m)
+                    {
+                        $m_array[] = $m->id;
+                    }
+                    break;
+                }
+                else
+                {
+                    $m_array[] = $m;                    
+                }
+            }
+        }
 
         // SMT Filter
         if(isset($_GET['smt'])) {$smt = $_GET['smt'];}
@@ -89,7 +121,7 @@ class ProductsController extends Controller
         // SQL Query
         if(isset($filters))
         {
-            $cpus = Cpu::where($filters)->get();
+            $cpus = Cpu::where($filters)->whereIn('manufacturer_id', $m_array)->get();
         }   
         else
         {
@@ -100,7 +132,7 @@ class ProductsController extends Controller
 
 
 
-
+        
         return view('pages.cpu.search', [
             'cpus' => $cpus,
             'cheapestCpu' => $cheapestCpu->price,
@@ -109,6 +141,7 @@ class ProductsController extends Controller
             'highestCoreCount' => $highestCoreCount->core_count,
             'highestTdp' => $highestTdp->tdp,
             'lowestTdp' => $lowestTdp->tdp,
+            'manufacturers' => $manufacturers,
         ]);
     }
 

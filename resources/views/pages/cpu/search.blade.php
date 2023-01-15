@@ -11,11 +11,11 @@
                     <div class="p-6 text-white min-w-48">
                         <div class="flex justify-between items-end mb-4">
                             <p class="font-bold text-2xl">Filters</p>
-                            <a class="underline" href="{{ route('products.cpu.search') }}">Reset</a>
+                            <a class="underline" href="{{ route('products.cpu.search') }}">Reset all</a>
                         </div>
                         
                         <form action="" method="GET" id="filter_form">
-                            <div class="form-control pb-2 mb-4 border-b border-white">
+                            <div class="form-control">
                                 {{-- Search filter --}}
                                 <label for="search" class="mb-2 text-sm font-medium sr-only text-white">Search</label>
                                 <div class="relative mb-4">
@@ -46,6 +46,31 @@
                                         <input type="hidden" value="{{ $cheapestCpu }}" name="price_min" id="price_min">
                                         <input type="hidden" value="{{ $mostExpensiveCpu }}" name="price_max" id="price_max">
                                     @endif
+                                </div>
+
+                                {{-- Manufacturer filter --}}
+                                <div class="form-control pb-4 mb-4 border-b border-white">
+                                    <p class="font-bold">Manufacturers</p>
+                                    <div>
+                                        <div class="flex items-center">
+                                            @if(request()->manufacturer)
+                                                <input name="manufacturer[]" id="manufacturer_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->manufacturer)) checked @endif>
+                                            @else
+                                                <input name="manufacturer[]" id="manufacturer_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->manufacturer) checked @endif>
+                                            @endif
+                                            <label for="manufacturer_all" class="ml-2 font-medium text-white">All</label>
+                                        </div>
+                                        @foreach($manufacturers as $manufacturer)
+                                            <div class="flex items-center">
+                                                @if(request()->manufacturer)
+                                                    <input name="manufacturer[]" id="manufacturer_{{ $manufacturer->id }}" type="checkbox" value="{{ $manufacturer->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($manufacturer->id, request()->manufacturer)) checked @endif>
+                                                @else
+                                                    <input name="manufacturer[]" id="manufacturer_{{ $manufacturer->id }}" type="checkbox" value="{{ $manufacturer->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
+                                                @endif
+                                                <label for="manufacturer_{{ $manufacturer->id }}" class="ml-2 font-medium text-white">{{ $manufacturer->name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
 
                                 {{-- Core count filter --}}
@@ -83,43 +108,44 @@
                                         <input type="hidden" value="{{ request()->tdp_min }}" name="tdp_min" id="tdp_min">
                                         <input type="hidden" value="{{ request()->tdp_max }}" name="tdp_max" id="tdp_max">
                                     @else
-                                        <input type="hidden" value="{{ $lowestCoreCount }}" name="tdp_min" id="tdp_min">
-                                        <input type="hidden" value="{{ $highestCoreCount }}" name="tdp_max" id="tdp_max">
+                                        <input type="hidden" value="{{ $lowestTdp }}" name="tdp_min" id="tdp_min">
+                                        <input type="hidden" value="{{ $highestTdp }}" name="tdp_max" id="tdp_max">
                                     @endif
                                 </div>
                                 
                                 {{-- Integrated Graphics filter --}}
-                                <p class="font-bold">Integrated Graphics</p>
-                                <div>
-                                    <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all' || !isset(request()->integrated_graphics) ) checked @endif>
-                                    <label for="integrated_graphics_all">All</label>
+                                <div class="form-control pb-4 mb-4 border-b border-white">
+                                    <p class="font-bold">Integrated Graphics</p>
+                                    <div>
+                                        <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all' || !isset(request()->integrated_graphics) ) checked @endif>
+                                        <label for="integrated_graphics_all">All</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="integrated_graphics" value="1" id="integrated_graphics_yes" @if(request()->integrated_graphics == '1') checked @endif>
+                                        <label for="integrated_graphics_yes">Yes</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="integrated_graphics" value="0" id="integrated_graphics_no" @if(request()->integrated_graphics == '0') checked @endif>
+                                        <label for="integrated_graphics_no">No</label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <input type="radio" name="integrated_graphics" value="1" id="integrated_graphics_yes" @if(request()->integrated_graphics == '1') checked @endif>
-                                    <label for="integrated_graphics_yes">Yes</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="integrated_graphics" value="0" id="integrated_graphics_no" @if(request()->integrated_graphics == '0') checked @endif>
-                                    <label for="integrated_graphics_no">No</label>
+                                {{-- SMT Filter --}}
+                                <div class="form-control pb-4 mb-4 border-b border-white">
+                                    <p class="font-bold">SMT</p>
+                                    <div>
+                                        <input type="radio" name="smt" value="all" id="smt_all" @if(request()->smt == 'all' || !isset(request()->smt) ) checked @endif>
+                                        <label for="smt_all">All</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="smt" value="1" id="smt_yes" @if(request()->smt == '1') checked @endif>
+                                        <label for="smt_yes">Yes</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="smt" value="0" id="smt_no" @if(request()->smt == '0') checked @endif>
+                                        <label for="smt_no">No</label>
+                                    </div>
                                 </div>
                             </div>
-                            {{-- SMT Filter --}}
-                            <div class="form-control pb-2 mb-4 border-b border-white">
-                                <p class="font-bold">SMT</p>
-                                <div>
-                                    <input type="radio" name="smt" value="all" id="smt_all" @if(request()->smt == 'all' || !isset(request()->smt) ) checked @endif>
-                                    <label for="smt_all">All</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="smt" value="1" id="smt_yes" @if(request()->smt == '1') checked @endif>
-                                    <label for="smt_yes">Yes</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="smt" value="0" id="smt_no" @if(request()->smt == '0') checked @endif>
-                                    <label for="smt_no">No</label>
-                                </div>
-                            </div>
-
 
                         </form>
                     </div>
@@ -246,7 +272,6 @@
 
 <script>
     
-    // Submit filter form on input
     var price_min = document.getElementById("price_min");
     var price_max = document.getElementById("price_max");
     var core_min = document.getElementById("core_min");
@@ -274,6 +299,42 @@
         tdp_max.value = data.maxRangeValue;
         filter_form.submit();
     });
+
+    // Integrated graphics
+    var integrated_graphics = document.querySelectorAll('input[name="integrated_graphics"]');
+    for (var i = 0; i < integrated_graphics.length; i++) {
+        integrated_graphics[i].addEventListener('change', function() {
+            filter_form.submit();
+        });
+    }
+
+    // SMT
+    var smt = document.querySelectorAll('input[name="smt"]');
+    for (var i = 0; i < smt.length; i++) {
+        smt[i].addEventListener('change', function() {
+            filter_form.submit();
+        });
+    }
+
+    // Manufacturer checkboxes
+    var manufacturer_checkboxes = document.querySelectorAll('input[name="manufacturer[]"]');
+    // If all is checked, uncheck the others on change
+    for (var i = 0; i < manufacturer_checkboxes.length; i++) {
+        manufacturer_checkboxes[i].addEventListener('change', function() {
+            if (this.value == 'all') {
+                for (var i = 0; i < manufacturer_checkboxes.length; i++) {
+                    if (manufacturer_checkboxes[i].value != 'all') {
+                        manufacturer_checkboxes[i].checked = false;
+                    }
+                }
+            } else {
+                manufacturer_checkboxes[0].checked = false;
+            }
+            filter_form.submit();
+        });
+    }
+    
+    
 
 </script>       
 
