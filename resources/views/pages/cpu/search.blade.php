@@ -73,6 +73,58 @@
                                     </div>
                                 </div>
 
+                                {{-- Series filter --}}
+                                <div class="form-control pb-4 mb-4 border-b border-white">
+                                    <p class="font-bold">Series</p>
+                                    <div>
+                                        <div class="flex items-center">
+                                            @if(request()->serie)
+                                                <input name="serie[]" id="serie_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->serie)) checked @endif>
+                                            @else
+                                                <input name="serie[]" id="serie_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->serie) checked @endif>
+                                            @endif
+                                            <label for="serie_all" class="ml-2 font-medium text-white">All</label>
+                                        </div>
+                                        <div id="series_items">
+                                            @foreach($series as $serie)
+                                                <div class="flex items-center">
+                                                    @if(request()->serie)
+                                                        <input name="serie[]" id="serie_{{ $serie->id }}" type="checkbox" value="{{ $serie->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($serie->id, request()->serie)) checked @endif>
+                                                    @else
+                                                        <input name="serie[]" id="serie_{{ $serie->id }}" type="checkbox" value="{{ $serie->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
+                                                    @endif
+                                                    <label for="serie_{{ $serie->id }}" class="ml-2 font-medium text-white">{{ $serie->name }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Socket filter --}}
+                                <div class="form-control pb-4 mb-4 border-b border-white">
+                                    <p class="font-bold">Sockets</p>
+                                    <div>
+                                        <div class="flex items-center">
+                                            @if(request()->socket)
+                                                <input name="socket[]" id="socket" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->socket)) checked @endif>
+                                            @else
+                                                <input name="socket[]" id="socket_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->socket) checked @endif>
+                                            @endif
+                                            <label for="socket_all" class="ml-2 font-medium text-white">All</label>
+                                        </div>
+                                        @foreach($sockets as $socket)
+                                            <div class="flex items-center">
+                                                @if(request()->socket)
+                                                    <input name="socket[]" id="socket_{{ $socket->id }}" type="checkbox" value="{{ $socket->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($socket->id, request()->socket)) checked @endif>
+                                                @else
+                                                    <input name="socket[]" id="socket_{{ $socket->id }}" type="checkbox" value="{{ $socket->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
+                                                @endif
+                                                <label for="socket_{{ $socket->id }}" class="ml-2 font-medium text-white">{{ $socket->name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
                                 {{-- Core count filter --}}
                                 <div class="form-control pb-2 mb-4 border-b border-white">
                                     <p class="font-bold">Core count</p>
@@ -245,8 +297,8 @@
                                                 <p class="w-fit py-4 px-6 font-medium whitespace-nowrap text-white">€{{ number_format($cpu->price, 2, ',', '.') }}</p>
                                             </td>
                                             <td class="py-4 px-6 font-medium whitespace-nowrap text-white w-60">
-                                                <a href="{{ route('builder.cpu.add', $cpu->id) }}">
-                                                    <button class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Select</button>
+                                                <a class="font-bold text-blue-500 hover:text-white hover:underline" href="{{ route('builder.cpu.add', $cpu->id) }}">
+                                                    Select CPU
                                                 </a>
                                             </td>
                                         </tr>
@@ -300,39 +352,112 @@
         filter_form.submit();
     });
 
-    // Integrated graphics
+
+
+    // Radio filters submit on change
+    var radio_filters = [];
+    var smt = document.querySelectorAll('input[name="smt"]');
     var integrated_graphics = document.querySelectorAll('input[name="integrated_graphics"]');
-    for (var i = 0; i < integrated_graphics.length; i++) {
-        integrated_graphics[i].addEventListener('change', function() {
-            filter_form.submit();
-        });
+
+    radio_filters.push(integrated_graphics);
+    radio_filters.push(smt);
+
+    for (var i = 0; i < radio_filters.length; i++) {
+        for (var j = 0; j < radio_filters[i].length; j++) {
+            radio_filters[i][j].addEventListener('change', function() {
+                filter_form.submit();
+            });
+        }
     }
 
-    // SMT
-    var smt = document.querySelectorAll('input[name="smt"]');
-    for (var i = 0; i < smt.length; i++) {
-        smt[i].addEventListener('change', function() {
-            filter_form.submit();
-        });
-    }
+    
 
     // Manufacturer checkboxes
     var manufacturer_checkboxes = document.querySelectorAll('input[name="manufacturer[]"]');
     // If all is checked, uncheck the others on change
-    for (var i = 0; i < manufacturer_checkboxes.length; i++) {
-        manufacturer_checkboxes[i].addEventListener('change', function() {
-            if (this.value == 'all') {
+    for (var i = 0; i < manufacturer_checkboxes.length; i++) 
+    {
+        manufacturer_checkboxes[i].addEventListener('change', function() 
+        {
+            if (this.value == 'all') 
+            {
                 for (var i = 0; i < manufacturer_checkboxes.length; i++) {
-                    if (manufacturer_checkboxes[i].value != 'all') {
+                    if (manufacturer_checkboxes[i].value != 'all') 
+                    {
                         manufacturer_checkboxes[i].checked = false;
                     }
                 }
-            } else {
+            } 
+            else 
+            {
                 manufacturer_checkboxes[0].checked = false;
             }
             filter_form.submit();
         });
     }
+
+    // Series checkboxes
+    var serie_checkboxes = document.querySelectorAll('input[name="serie[]"]');
+    // If all is checked, uncheck the others on change
+    for (var i = 0; i < serie_checkboxes.length; i++) 
+    {
+        serie_checkboxes[i].addEventListener('change', function() 
+        {
+            if (this.value == 'all') 
+            {
+                for (var i = 0; i < serie_checkboxes.length; i++) {
+                    if (serie_checkboxes[i].value != 'all') 
+                    {
+                        serie_checkboxes[i].checked = false;
+                    }
+                }
+            } 
+            else 
+            {
+                serie_checkboxes[0].checked = false;
+            }
+            filter_form.submit();
+        });
+    }
+
+    // Sockets checkboxes
+    var socket_checkboxes = document.querySelectorAll('input[name="socket[]"]');
+    // If all is checked, uncheck the others on change
+    for (var i = 0; i < socket_checkboxes.length; i++) 
+    {
+        socket_checkboxes[i].addEventListener('change', function() 
+        {
+            if (this.value == 'all') 
+            {
+                for (var i = 0; i < socket_checkboxes.length; i++) {
+                    if (socket_checkboxes[i].value != 'all') 
+                    {
+                        socket_checkboxes[i].checked = false;
+                    }
+                }
+            } 
+            else 
+            {
+                socket_checkboxes[0].checked = false;
+            }
+            filter_form.submit();
+        });
+    }
+
+    // Series collapse
+    var series_collapse = document.getElementById('series_collapse');
+    var series_items = document.getElementById('series_items');
+
+    series_collapse.addEventListener('click', function() {
+        if (series_items.classList.contains('hidden')) {
+            series_items.classList.remove('hidden');
+            series_collapse.innerHTML = 'Hide';
+        } else {
+            series_items.classList.add('hidden');
+            series_collapse.innerHTML = 'Show';
+        }
+    });
+    
     
     
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cpu;
 use App\Models\CpuManufacturer;
+use App\Models\CpuSeries;
+use App\Models\CpuSockets;
 
 class ProductsController extends Controller
 {
@@ -38,6 +40,8 @@ class ProductsController extends Controller
         $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
 
         $manufacturers = CpuManufacturer::all();
+        $series = CpuSeries::all();
+        $sockets = CpuSockets::all();
 
 
 
@@ -110,6 +114,54 @@ class ProductsController extends Controller
             }
         }
 
+        // Series Filter
+        if(isset($_GET['serie'])) 
+        {
+            $serie = $_GET['serie'];
+
+            // Loop through serie array and add to filters array
+            foreach($serie as $s)
+            {
+                if($s == 'all')
+                {
+                    // Add all serie ids to array if 'all'
+                    foreach($series as $s)
+                    {
+                        $s_array[] = $s->id;
+                    }
+                    break;
+                }
+                else
+                {
+                    $s_array[] = $s;                    
+                }
+            }
+        }
+
+        // Sockets Filter
+        if(isset($_GET['socket'])) 
+        {
+            $socket = $_GET['socket'];
+
+            // Loop through socket array and add to filters array
+            foreach($socket as $s)
+            {
+                if($s == 'all')
+                {
+                    // Add all socket ids to array if 'all'
+                    foreach($sockets as $s)
+                    {
+                        $sckt_array[] = $s->id;
+                    }
+                    break;
+                }
+                else
+                {
+                    $sckt_array[] = $s;                    
+                }
+            }
+        }
+
         // SMT Filter
         if(isset($_GET['smt'])) {$smt = $_GET['smt'];}
 
@@ -121,7 +173,11 @@ class ProductsController extends Controller
         // SQL Query
         if(isset($filters))
         {
-            $cpus = Cpu::where($filters)->whereIn('manufacturer_id', $m_array)->get();
+            $cpus = Cpu::where($filters)
+                ->whereIn('manufacturer_id', $m_array)
+                ->whereIn('series_id', $s_array)
+                ->whereIn('socket_id', $sckt_array)
+                ->get();
         }   
         else
         {
@@ -129,19 +185,20 @@ class ProductsController extends Controller
         }
 
 
-
-
-
-        
+        // Return view
         return view('pages.cpu.search', [
             'cpus' => $cpus,
+
             'cheapestCpu' => $cheapestCpu->price,
             'mostExpensiveCpu' => $mostExpensiveCpu->price,
             'lowestCoreCount' => $lowestCoreCount->core_count,
             'highestCoreCount' => $highestCoreCount->core_count,
             'highestTdp' => $highestTdp->tdp,
             'lowestTdp' => $lowestTdp->tdp,
+
             'manufacturers' => $manufacturers,
+            'series' => $series,
+            'sockets' => $sockets,
         ]);
     }
 
