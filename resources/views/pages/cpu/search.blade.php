@@ -106,7 +106,7 @@
                                     <div>
                                         <div class="flex items-center">
                                             @if(request()->socket)
-                                                <input name="socket[]" id="socket" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->socket)) checked @endif>
+                                                <input name="socket[]" id="socket_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->socket)) checked @endif>
                                             @else
                                                 <input name="socket[]" id="socket_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->socket) checked @endif>
                                             @endif
@@ -356,11 +356,11 @@
 
     // Radio filters submit on change
     var radio_filters = [];
+
     var smt = document.querySelectorAll('input[name="smt"]');
     var integrated_graphics = document.querySelectorAll('input[name="integrated_graphics"]');
 
-    radio_filters.push(integrated_graphics);
-    radio_filters.push(smt);
+    radio_filters.push(integrated_graphics, smt);
 
     for (var i = 0; i < radio_filters.length; i++) {
         for (var j = 0; j < radio_filters[i].length; j++) {
@@ -370,96 +370,80 @@
         }
     }
 
-    
+
+
+    // Checkbox filters submit on change
 
     // Manufacturer checkboxes
     var manufacturer_checkboxes = document.querySelectorAll('input[name="manufacturer[]"]');
-    // If all is checked, uncheck the others on change
-    for (var i = 0; i < manufacturer_checkboxes.length; i++) 
-    {
-        manufacturer_checkboxes[i].addEventListener('change', function() 
-        {
-            if (this.value == 'all') 
-            {
-                for (var i = 0; i < manufacturer_checkboxes.length; i++) {
-                    if (manufacturer_checkboxes[i].value != 'all') 
-                    {
-                        manufacturer_checkboxes[i].checked = false;
-                    }
-                }
-            } 
-            else 
-            {
-                manufacturer_checkboxes[0].checked = false;
-            }
-            filter_form.submit();
-        });
-    }
+    addCheckboxEvent(manufacturer_checkboxes, filter_form);
 
     // Series checkboxes
     var serie_checkboxes = document.querySelectorAll('input[name="serie[]"]');
-    // If all is checked, uncheck the others on change
-    for (var i = 0; i < serie_checkboxes.length; i++) 
-    {
-        serie_checkboxes[i].addEventListener('change', function() 
-        {
-            if (this.value == 'all') 
-            {
-                for (var i = 0; i < serie_checkboxes.length; i++) {
-                    if (serie_checkboxes[i].value != 'all') 
-                    {
-                        serie_checkboxes[i].checked = false;
-                    }
-                }
-            } 
-            else 
-            {
-                serie_checkboxes[0].checked = false;
-            }
-            filter_form.submit();
-        });
-    }
+    addCheckboxEvent(serie_checkboxes, filter_form);    
 
-    // Sockets checkboxes
+    // Socket checkboxes
     var socket_checkboxes = document.querySelectorAll('input[name="socket[]"]');
-    // If all is checked, uncheck the others on change
-    for (var i = 0; i < socket_checkboxes.length; i++) 
-    {
-        socket_checkboxes[i].addEventListener('change', function() 
-        {
-            if (this.value == 'all') 
-            {
-                for (var i = 0; i < socket_checkboxes.length; i++) {
-                    if (socket_checkboxes[i].value != 'all') 
-                    {
-                        socket_checkboxes[i].checked = false;
-                    }
-                }
-            } 
-            else 
-            {
-                socket_checkboxes[0].checked = false;
-            }
-            filter_form.submit();
+    addCheckboxEvent(socket_checkboxes, filter_form);
+
+    function addCheckboxEvent(checkboxes, form) {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                if (this.value == 'all') 
+                {
+                    checkboxes.forEach(function(innerCheckbox) {
+                        if (innerCheckbox.value != 'all') 
+                        {
+                            innerCheckbox.checked = false;
+                        }
+                    });
+                } 
+                else 
+                {
+                    checkboxes[0].checked = false;
+                }  
+
+                form.submit();
+            });
         });
     }
+    
 
-    // Series collapse
-    var series_collapse = document.getElementById('series_collapse');
-    var series_items = document.getElementById('series_items');
 
-    series_collapse.addEventListener('click', function() {
-        if (series_items.classList.contains('hidden')) {
-            series_items.classList.remove('hidden');
-            series_collapse.innerHTML = 'Hide';
-        } else {
-            series_items.classList.add('hidden');
-            series_collapse.innerHTML = 'Show';
-        }
-    });
-    
-    
-    
+    // // Manufacturer checkboxes
+    // var manufacturer_checkboxes = document.querySelectorAll('input[name="manufacturer[]"]');
+    // // If all is checked, uncheck the others on change
+    // for (var i = 0; i < manufacturer_checkboxes.length; i++) 
+    // {
+    //     manufacturer_checkboxes[i].addEventListener('change', function() 
+    //     {
+    //         if (this.value == 'all') 
+    //         {
+    //             for (var i = 0; i < manufacturer_checkboxes.length; i++) {
+    //                 if (manufacturer_checkboxes[i].value != 'all') 
+    //                 {
+    //                     manufacturer_checkboxes[i].checked = false;
+    //                 }
+    //             }
+    //         } 
+    //         else 
+    //         {
+    //             manufacturer_checkboxes[0].checked = false;
+    //         }
+
+            // // Check if any checkbox is checked, if not, check 'all'
+            // for (var i = 0; i < manufacturer_checkboxes.length; i++) {
+            //     if (manufacturer_checkboxes[i].checked) {
+            //         manufacturer_checkboxes[0].checked = false;
+            //         break;
+            //     } else {
+            //         manufacturer_checkboxes[0].checked = true;
+            //     }
+            // }
+
+    //         filter_form.submit();
+    //     });
+    // }
 
 </script>       
 
