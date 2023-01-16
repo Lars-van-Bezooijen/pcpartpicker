@@ -3,8 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Stevebauman\Location\Facades\Location;
-use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\BuilderController;
+use App\Http\Controllers\CpuController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,8 @@ use App\Http\Controllers\BuilderController;
 
 Route::get('/builder', [BuilderController::class, 'builder'])->name('builder');
 
-Route::get('/products/cpu', [ProductsController::class, 'cpu_search'])->name('products.cpu.search');
-Route::get('/products/cpu/{id}', [ProductsController::class, 'cpu_show'])->name('products.cpu.show');
+Route::get('/products/cpu', [CpuController::class, 'cpu_search'])->name('products.cpu.search');
+Route::get('/products/cpu/{id}', [CpuController::class, 'cpu_show'])->name('products.cpu.show');
 Route::get('/products/cpu/add/{id}', [BuilderController::class, 'cpu_add'])->name('builder.cpu.add');
 Route::get('/products/cpu/remove/{id}', [BuilderController::class, 'cpu_remove'])->name('builder.cpu.remove');
 

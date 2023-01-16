@@ -8,13 +8,19 @@ use App\Models\CpuManufacturer;
 use App\Models\CpuSeries;
 use App\Models\CpuSockets;
 
-class ProductsController extends Controller
+class CpuController extends Controller
 {
+    //
+    // CPU PRODUCT LIST
+    //
+
     public function cpu_search()
     {
+        // 
+        // GET ALL NEEDED DATA
+        //
 
-        $integrated_graphics = null;
-        $smt = null;
+        // Set variables
         $price_min = null;
         $price_max = null;
         $core_min = null;
@@ -22,28 +28,32 @@ class ProductsController extends Controller
         $tdp_min = null;
         $tdp_max = null;
         $manufacturer = null;
+        $filterRadioValue = null;
 
-
-
-        // Get Cheapest and Most Expensive CPU Prices
-        $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
-        // round down to full dollar
-        $cheapestCpu->price = floor($cheapestCpu->price);
-        $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
-        // round up to full dollar
-        $mostExpensiveCpu->price = ceil($mostExpensiveCpu->price);
-
-        $lowestCoreCount = Cpu::orderBy('core_count', 'asc')->first();
-        $highestCoreCount = Cpu::orderBy('core_count', 'desc')->first();
-
-        $highestTdp = Cpu::orderBy('tdp', 'desc')->first();
-        $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
-
+        // Get all manufacturers, series and sockets
         $manufacturers = CpuManufacturer::all();
         $series = CpuSeries::all();
         $sockets = CpuSockets::all();
 
+        // Get cheapest and most expensive CPU prices
+        $cheapestCpu = Cpu::orderBy('price', 'asc')->first();
+        $cheapestCpu->price = floor($cheapestCpu->price);
+        $mostExpensiveCpu = Cpu::orderBy('price', 'desc')->first();
+        $mostExpensiveCpu->price = ceil($mostExpensiveCpu->price);
 
+        // Get lowest and highest core count
+        $lowestCoreCount = Cpu::orderBy('core_count', 'asc')->first();
+        $highestCoreCount = Cpu::orderBy('core_count', 'desc')->first();
+
+        // Get lowest and highest TDP
+        $highestTdp = Cpu::orderBy('tdp', 'desc')->first();
+        $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
+
+
+
+        // 
+        // ALL FILTERS
+        //
 
         // Search Filter
         if(isset($_GET['search']))
@@ -51,6 +61,17 @@ class ProductsController extends Controller
             $search = $_GET['search'];
             $filters[] = ['name', 'like', '%'.$search.'%'];
         }
+        
+
+
+
+
+        
+
+
+        
+
+
 
         // Price Filter
         if(isset($_GET['price_min'])) {$price_min = $_GET['price_min'];}
@@ -82,13 +103,42 @@ class ProductsController extends Controller
             $filters[] = ['tdp', '<=', $tdp_max];
         }
 
-        // Integrated Graphics Filter
-        if(isset($_GET['integrated_graphics'])) {$integrated_graphics = $_GET['integrated_graphics'];}
 
-        if($integrated_graphics == '1' || $integrated_graphics == '0')
+
+
+
+
+        // Checkbox filters
+        $checkboxFilters = [
+            'manufacturer' => $manufacturers,
+            'serie' => $series,
+            'socket' => $sockets,
+        ];
+
+
+        // Series Filter
+        if(isset($_GET['serie'])) 
         {
-            $filters[] = ['integrated_graphics', '=', $integrated_graphics];
-        } 
+            $serie = $_GET['serie'];
+
+            // Loop through serie array and add to filters array
+            foreach($serie as $s)
+            {
+                if($s == 'all')
+                {
+                    // Add all serie ids to array if 'all'
+                    foreach($series as $s)
+                    {
+                        $s_array[] = $s->id;
+                    }
+                    break;
+                }
+                else
+                {
+                    $s_array[] = $s;                    
+                }
+            }
+        }
         
         // Manufacturer Filter
         if(isset($_GET['manufacturer'])) 
@@ -114,29 +164,7 @@ class ProductsController extends Controller
             }
         }
 
-        // Series Filter
-        if(isset($_GET['serie'])) 
-        {
-            $serie = $_GET['serie'];
-
-            // Loop through serie array and add to filters array
-            foreach($serie as $s)
-            {
-                if($s == 'all')
-                {
-                    // Add all serie ids to array if 'all'
-                    foreach($series as $s)
-                    {
-                        $s_array[] = $s->id;
-                    }
-                    break;
-                }
-                else
-                {
-                    $s_array[] = $s;                    
-                }
-            }
-        }
+        
 
         // Sockets Filter
         if(isset($_GET['socket'])) 
@@ -162,32 +190,51 @@ class ProductsController extends Controller
             }
         }
 
-        // SMT Filter
-        if(isset($_GET['smt'])) {$smt = $_GET['smt'];}
+        // Radio Filters
+        $radioFilters = [
+            'smt', 
+            'integrated_graphics',
+        ];
 
-        if($smt == '1' || $smt == '0')
+        foreach($radioFilters as $filter)
         {
-            $filters[] = ['smt', '=', $smt];
+            if(isset($_GET[$filter])) {$filterRadioValue = $_GET[$filter];}
+
+            if($filterRadioValue == '1' || $filterRadioValue == '0')
+            {
+                $filters[] = [$filter, '=', $filterRadioValue];
+            }
         }
 
-        // SQL Query
+
+
+        //
+        // PREPARING SQL QUERY
+        //
+
         if(isset($filters))
         {
             $cpus = Cpu::where($filters)
                 ->whereIn('manufacturer_id', $m_array)
                 ->whereIn('series_id', $s_array)
                 ->whereIn('socket_id', $sckt_array)
+                ->orderBy('created_at', 'desc')
                 ->get();
         }   
-        else
-        {
-            $cpus = Cpu::all();
-        }
+        else{ $cpus = Cpu::all(); }
 
 
-        // Return view
+
+        //
+        // RETURN VIEW
+        //
+
         return view('pages.cpu.search', [
             'cpus' => $cpus,
+
+            'manufacturers' => $manufacturers,
+            'series' => $series,
+            'sockets' => $sockets,
 
             'cheapestCpu' => $cheapestCpu->price,
             'mostExpensiveCpu' => $mostExpensiveCpu->price,
@@ -195,12 +242,15 @@ class ProductsController extends Controller
             'highestCoreCount' => $highestCoreCount->core_count,
             'highestTdp' => $highestTdp->tdp,
             'lowestTdp' => $lowestTdp->tdp,
-
-            'manufacturers' => $manufacturers,
-            'series' => $series,
-            'sockets' => $sockets,
         ]);
     }
+
+
+
+
+    //
+    // SHOW SPECIFIC CPU
+    //
 
     public function cpu_show($id)
     {
@@ -209,4 +259,5 @@ class ProductsController extends Controller
             'cpu' => $cpu
         ]);
     }
+
 }

@@ -13,22 +13,20 @@ class CpuSocketSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-       $sockets = [
-            "AM3",
-            "AM3+",
-            "AM4",
-            "AM5",
-            "LGA 1150",
-            "LGA 1200",
-            "LGA 1700",
-       ]; 
+     public function run()
+     {
+          $sockets = [
+               "LGA 1150",
+               "LGA 1151",
+               "LGA 1200",
+               "LGA 1700",
+               "Zen 2",
+          ]; 
 
-         foreach ($sockets as $socket) {
-              CpuSockets::create([
-                'name' => $socket,
-              ]);
-         }
-    }
+          foreach ($sockets as $socket) {
+               CpuSockets::create([
+                    'name' => $socket,
+               ]);
+          }
+     }
 }
