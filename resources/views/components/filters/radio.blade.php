@@ -2,6 +2,7 @@
     'filter_name' => '', 
 ])
 
+{{-- Radio filter --}}
 <div class="form-control pb-4 mb-4 border-b border-white">
     <p class="font-bold">{{ $filter_title }}</p>
     <div>

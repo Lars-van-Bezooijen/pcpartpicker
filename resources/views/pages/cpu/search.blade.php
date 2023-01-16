@@ -9,139 +9,49 @@
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-white min-w-48">
+
+                        {{-- Filter top --}}
                         <div class="flex justify-between items-end mb-4">
                             <p class="font-bold text-2xl">Filters</p>
                             <a class="underline" href="{{ route('products.cpu.search') }}">Reset all</a>
                         </div>
                         
+                        {{-- All filters --}}
                         <form action="" method="GET" id="filter_form">
                             <div class="form-control">
                                 {{-- Search filter --}}
-                                <label for="search" class="mb-2 text-sm font-medium sr-only text-white">Search</label>
-                                <div class="relative mb-4">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    </div>
-                                    <input name="search" type="search" id="search_input" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500" placeholder="Enter product name..." @if(request()->search) value="{{ request()->search }}" @endif)>
-                                </div>
+                                <x-filters.search/>
 
                                 {{-- Submit button --}}
                                 <button type="submit" class="mb-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Apply filter</button>
 
-                                {{-- Price filter --}}
-                                {{-- <div class="form-control pb-2 mb-4 border-b border-white">
-                                    <p class="font-bold">Price</p>
-                                    <div class="mb-2">
-                                        @if(request()->price_min && request()->price_max)
-                                            <range-selector min-range="{{ $cheapestCpu }}" max-range="{{ $mostExpensiveCpu }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" label-before="€"  event-name-to-emit-on-change="price_slider" preset-min="{{ request()->price_min }}" preset-max="{{ request()->price_max }}"/>
-                                        @else
-                                            <range-selector min-range="{{ $cheapestCpu }}" max-range="{{ $mostExpensiveCpu }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" label-before="€"  event-name-to-emit-on-change="price_slider"/>
-                                        @endif
-                                    </div>
-
-                                    @if(request()->price_min && request()->price_max)
-                                        <input type="hidden" value="{{ request()->price_min }}" name="price_min" id="price_min">
-                                        <input type="hidden" value="{{ request()->price_max }}" name="price_max" id="price_max">
-                                    @else
-                                        <input type="hidden" value="{{ $cheapestCpu }}" name="price_min" id="price_min">
-                                        <input type="hidden" value="{{ $mostExpensiveCpu }}" name="price_max" id="price_max">
-                                    @endif
-                                </div> --}}
-
                                 {{-- Price (slider) --}}
-                                <x-filter-slider filter_title="Price" filter_min_name="price_min" filter_max_name="price_max" lowest_number="{{ $cheapestCpu }}" highest_number="{{ $mostExpensiveCpu }}" label_before="€"/>
+                                <x-filters.slider filter_title="Price" filter_slider_name="price_slider" filter_min_name="price_min" filter_max_name="price_max" lowest_number="{{ $cheapestCpu }}" highest_number="{{ $mostExpensiveCpu }}" label_before="€"/>
 
                                 {{-- Manufacturer filter --}}
-                                <div class="form-control pb-4 mb-4 border-b border-white">
-                                    <p class="font-bold">Manufacturers</p>
-                                    <div>
-                                        <div class="flex items-center">
-                                            @if(request()->manufacturer)
-                                                <input name="manufacturer[]" id="manufacturer_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->manufacturer)) checked @endif>
-                                            @else
-                                                <input name="manufacturer[]" id="manufacturer_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->manufacturer) checked @endif>
-                                            @endif
-                                            <label for="manufacturer_all" class="ml-2 font-medium text-white">All</label>
-                                        </div>
-                                        @foreach($manufacturers as $manufacturer)
-                                            <div class="flex items-center">
-                                                @if(request()->manufacturer)
-                                                    <input name="manufacturer[]" id="manufacturer_{{ $manufacturer->id }}" type="checkbox" value="{{ $manufacturer->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($manufacturer->id, request()->manufacturer)) checked @endif>
-                                                @else
-                                                    <input name="manufacturer[]" id="manufacturer_{{ $manufacturer->id }}" type="checkbox" value="{{ $manufacturer->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
-                                                @endif
-                                                <label for="manufacturer_{{ $manufacturer->id }}" class="ml-2 font-medium text-white">{{ $manufacturer->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
+                                <x-filters.checkbox filter_title="Manufacturers" filter_name="manufacturer" :foreach_var="$manufacturers"/>
 
                                 {{-- Series filter --}}
-                                <div class="form-control pb-4 mb-4 border-b border-white">
-                                    <p class="font-bold">Series</p>
-                                    <div>
-                                        <div class="flex items-center">
-                                            @if(request()->serie)
-                                                <input name="serie[]" id="serie_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->serie)) checked @endif>
-                                            @else
-                                                <input name="serie[]" id="serie_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->serie) checked @endif>
-                                            @endif
-                                            <label for="serie_all" class="ml-2 font-medium text-white">All</label>
-                                        </div>
-                                        <div id="series_items">
-                                            @foreach($series as $serie)
-                                                <div class="flex items-center">
-                                                    @if(request()->serie)
-                                                        <input name="serie[]" id="serie_{{ $serie->id }}" type="checkbox" value="{{ $serie->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($serie->id, request()->serie)) checked @endif>
-                                                    @else
-                                                        <input name="serie[]" id="serie_{{ $serie->id }}" type="checkbox" value="{{ $serie->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
-                                                    @endif
-                                                    <label for="serie_{{ $serie->id }}" class="ml-2 font-medium text-white">{{ $serie->name }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
+                                <x-filters.checkbox filter_title="Series" filter_name="serie" :foreach_var="$series"/>
 
                                 {{-- Socket filter --}}
-                                <div class="form-control pb-4 mb-4 border-b border-white">
-                                    <p class="font-bold">Sockets</p>
-                                    <div>
-                                        <div class="flex items-center">
-                                            @if(request()->socket)
-                                                <input name="socket[]" id="socket_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array('all', request()->socket)) checked @endif>
-                                            @else
-                                                <input name="socket[]" id="socket_all" type="checkbox" value="all" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(!request()->socket) checked @endif>
-                                            @endif
-                                            <label for="socket_all" class="ml-2 font-medium text-white">All</label>
-                                        </div>
-                                        @foreach($sockets as $socket)
-                                            <div class="flex items-center">
-                                                @if(request()->socket)
-                                                    <input name="socket[]" id="socket_{{ $socket->id }}" type="checkbox" value="{{ $socket->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2" @if(in_array($socket->id, request()->socket)) checked @endif>
-                                                @else
-                                                    <input name="socket[]" id="socket_{{ $socket->id }}" type="checkbox" value="{{ $socket->id }}" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2">
-                                                @endif
-                                                <label for="socket_{{ $socket->id }}" class="ml-2 font-medium text-white">{{ $socket->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
+                                <x-filters.checkbox filter_title="Sockets" filter_name="socket" :foreach_var="$sockets"/>
+                                
                                 {{-- Core count filter (slider) --}}
-                                <x-filter-slider filter_title="Core count" filter_min_name="core_min" filter_max_name="core_max" lowest_number="{{ $lowestCoreCount }}" highest_number="{{ $highestCoreCount }}"/>
+                                <x-filters.slider filter_title="Core count" filter_slider_name="core_count_slider" filter_min_name="core_min" filter_max_name="core_max" lowest_number="{{ $lowestCoreCount }}" highest_number="{{ $highestCoreCount }}"/>
 
                                 {{-- TDP filter (slider) --}}
-                                <x-filter-slider filter_title="TDP" filter_min_name="tdp_min" filter_max_name="tdp_max" lowest_number="{{ $lowestTdp }}" highest_number="{{ $highestTdp }}" label_after=" W"/>
+                                <x-filters.slider filter_title="TDP" filter_slider_name="tdp_slider" filter_min_name="tdp_min" filter_max_name="tdp_max" lowest_number="{{ $lowestTdp }}" highest_number="{{ $highestTdp }}" label_after=" W"/>
 
                                 {{-- Integrated graphics filter (radio) --}}
-                                <x-filter-radio filter_title="Integrated Graphics" filter_name="integrated_graphics"/>
+                                <x-filters.radio filter_title="Integrated Graphics" filter_name="integrated_graphics"/>
 
                                 {{-- SMT filter (radio) --}}
-                                <x-filter-radio filter_title="SMT" filter_name="smt"/>
+                                <x-filters.radio filter_title="SMT" filter_name="smt"/>
 
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -152,6 +62,7 @@
             <div class="sm:px-6 lg:px-8">
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-white">
+
                         {{-- Information --}}
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                             <div class="flex items-end">
@@ -170,6 +81,8 @@
                         {{-- Table of parts --}}
                         <div class="overflow-x-auto relative rounded-md">
                             <table class="w-full text-sm text-left text-gray-400">
+
+                                {{-- Top row --}}
                                 <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                                     <tr>
                                         <th scope="col" class="py-3 px-6 w-1">
@@ -199,6 +112,8 @@
                                         <th></th>
                                     </tr>
                                 </thead>
+
+                                {{-- All products --}}
                                 <tbody>
                                     @foreach($cpus as $cpu)
                                         <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-700">
@@ -253,7 +168,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -350,7 +264,7 @@
                     checkboxes[0].checked = false;
                 }
 
-                // form.submit();
+                form.submit();
             });
         });
     }

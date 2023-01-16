@@ -1,4 +1,5 @@
 @props(['filter_title' => '',
+    'filter_slider_name' => '',
     'filter_min_name' => '',
     'filter_max_name' => '', 
     'lowest_number' => 0,
@@ -7,14 +8,14 @@
     'label_before' => ''
 ])
 
-{{-- TDP filter --}}
+{{-- Slider filter --}}
 <div class="form-control pb-2 mb-4 border-b border-white">
     <p class="font-bold">{{ $filter_title }}</p>
     <div class="mb-2">
         @if(request()->$filter_min_name && request()->$filter_max_name)
-            <range-selector min-range="{{ $lowest_number }}" max-range="{{ $highest_number }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" preset-min="{{ request()->$filter_min_name }}" preset-max="{{ request()->$filter_max_name }}" label-after="{{ $label_after }}" label-before="{{ $label_before }}"/>
+            <range-selector min-range="{{ $lowest_number }}" max-range="{{ $highest_number }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="{{ $filter_slider_name }}" preset-min="{{ request()->$filter_min_name }}" preset-max="{{ request()->$filter_max_name }}" label-after="{{ $label_after }}" label-before="{{ $label_before }}"/>
         @else
-            <range-selector min-range="{{ $lowest_number }}" max-range="{{ $highest_number }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" label-after="{{ $label_after }}" label-before="{{ $label_before }}"/>
+            <range-selector min-range="{{ $lowest_number }}" max-range="{{ $highest_number }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="{{ $filter_slider_name }}" label-after="{{ $label_after }}" label-before="{{ $label_before }}"/>
         @endif
     </div>
 
