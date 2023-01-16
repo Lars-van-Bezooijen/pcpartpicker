@@ -19,7 +19,6 @@ use App\Http\Controllers\BuilderController;
 
 Route::get('/builder', [BuilderController::class, 'builder'])->name('builder');
 
-
 Route::get('/products/cpu', [ProductsController::class, 'cpu_search'])->name('products.cpu.search');
 Route::get('/products/cpu/{id}', [ProductsController::class, 'cpu_show'])->name('products.cpu.show');
 Route::get('/products/cpu/add/{id}', [BuilderController::class, 'cpu_add'])->name('builder.cpu.add');

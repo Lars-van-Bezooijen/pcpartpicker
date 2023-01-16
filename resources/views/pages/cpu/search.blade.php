@@ -29,7 +29,7 @@
                                 <button type="submit" class="mb-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Apply filter</button>
 
                                 {{-- Price filter --}}
-                                <div class="form-control pb-2 mb-4 border-b border-white">
+                                {{-- <div class="form-control pb-2 mb-4 border-b border-white">
                                     <p class="font-bold">Price</p>
                                     <div class="mb-2">
                                         @if(request()->price_min && request()->price_max)
@@ -46,7 +46,10 @@
                                         <input type="hidden" value="{{ $cheapestCpu }}" name="price_min" id="price_min">
                                         <input type="hidden" value="{{ $mostExpensiveCpu }}" name="price_max" id="price_max">
                                     @endif
-                                </div>
+                                </div> --}}
+
+                                {{-- Price (slider) --}}
+                                <x-filter-slider filter_title="Price" filter_min_name="price_min" filter_max_name="price_max" lowest_number="{{ $cheapestCpu }}" highest_number="{{ $mostExpensiveCpu }}" label_before="€"/>
 
                                 {{-- Manufacturer filter --}}
                                 <div class="form-control pb-4 mb-4 border-b border-white">
@@ -125,80 +128,19 @@
                                     </div>
                                 </div>
 
-                                {{-- Core count filter --}}
-                                <div class="form-control pb-2 mb-4 border-b border-white">
-                                    <p class="font-bold">Core count</p>
-                                    <div class="mb-2">
-                                        @if(request()->core_min && request()->core_max)
-                                            <range-selector min-range="{{ $lowestCoreCount }}" max-range="{{ $highestCoreCount }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="core_count_slider" preset-min="{{ request()->core_min }}" preset-max="{{ request()->core_max }}"/>
-                                        @else
-                                            <range-selector min-range="{{ $lowestCoreCount }}" max-range="{{ $highestCoreCount }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="core_count_slider"/>
-                                        @endif
-                                    </div>
+                                {{-- Core count filter (slider) --}}
+                                <x-filter-slider filter_title="Core count" filter_min_name="core_min" filter_max_name="core_max" lowest_number="{{ $lowestCoreCount }}" highest_number="{{ $highestCoreCount }}"/>
 
-                                    @if(request()->core_min && request()->core_max)
-                                        <input type="hidden" value="{{ request()->core_min }}" name="core_min" id="core_min">
-                                        <input type="hidden" value="{{ request()->core_max }}" name="core_max" id="core_max">
-                                    @else
-                                        <input type="hidden" value="{{ $lowestCoreCount }}" name="core_min" id="core_min">
-                                        <input type="hidden" value="{{ $highestCoreCount }}" name="core_max" id="core_max">
-                                    @endif
-                                </div>
+                                {{-- TDP filter (slider) --}}
+                                <x-filter-slider filter_title="TDP" filter_min_name="tdp_min" filter_max_name="tdp_max" lowest_number="{{ $lowestTdp }}" highest_number="{{ $highestTdp }}" label_after=" W"/>
 
-                                {{-- TDP filter --}}
-                                <div class="form-control pb-2 mb-4 border-b border-white">
-                                    <p class="font-bold">TDP</p>
-                                    <div class="mb-2">
-                                        @if(request()->tdp_min && request()->tdp_max)
-                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" preset-min="{{ request()->tdp_min }}" preset-max="{{ request()->tdp_max }}" label-after=" W"/>
-                                        @else
-                                            <range-selector min-range="{{ $lowestTdp }}" max-range="{{ $highestTdp }}" slider-color="#384454" circle-border="3px solid #1c64f3" circle-focus-border="5px solid #1c64f3" event-name-to-emit-on-change="tdp_slider" label-after=" W"/>
-                                        @endif
-                                    </div>
+                                {{-- Integrated graphics filter (radio) --}}
+                                <x-filter-radio filter_title="Integrated Graphics" filter_name="integrated_graphics"/>
 
-                                    @if(request()->tdp_min && request()->tdp_max)
-                                        <input type="hidden" value="{{ request()->tdp_min }}" name="tdp_min" id="tdp_min">
-                                        <input type="hidden" value="{{ request()->tdp_max }}" name="tdp_max" id="tdp_max">
-                                    @else
-                                        <input type="hidden" value="{{ $lowestTdp }}" name="tdp_min" id="tdp_min">
-                                        <input type="hidden" value="{{ $highestTdp }}" name="tdp_max" id="tdp_max">
-                                    @endif
-                                </div>
-                                
-                                {{-- Integrated Graphics filter --}}
-                                <div class="form-control pb-4 mb-4 border-b border-white">
-                                    <p class="font-bold">Integrated Graphics</p>
-                                    <div>
-                                        <input type="radio" name="integrated_graphics" value="all" id="integrated_graphics_all" @if(request()->integrated_graphics == 'all' || !isset(request()->integrated_graphics) ) checked @endif>
-                                        <label for="integrated_graphics_all">All</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="integrated_graphics" value="1" id="integrated_graphics_yes" @if(request()->integrated_graphics == '1') checked @endif>
-                                        <label for="integrated_graphics_yes">Yes</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="integrated_graphics" value="0" id="integrated_graphics_no" @if(request()->integrated_graphics == '0') checked @endif>
-                                        <label for="integrated_graphics_no">No</label>
-                                    </div>
-                                </div>
-                                {{-- SMT Filter --}}
-                                <div class="form-control pb-4 mb-4 border-b border-white">
-                                    <p class="font-bold">SMT</p>
-                                    <div>
-                                        <input type="radio" name="smt" value="all" id="smt_all" @if(request()->smt == 'all' || !isset(request()->smt) ) checked @endif>
-                                        <label for="smt_all">All</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="smt" value="1" id="smt_yes" @if(request()->smt == '1') checked @endif>
-                                        <label for="smt_yes">Yes</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="smt" value="0" id="smt_no" @if(request()->smt == '0') checked @endif>
-                                        <label for="smt_no">No</label>
-                                    </div>
-                                </div>
+                                {{-- SMT filter (radio) --}}
+                                <x-filter-radio filter_title="SMT" filter_name="smt"/>
+
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -216,7 +158,6 @@
                                 <h1 class="text-3xl font-bold">List of CPU's</h1>
                             </div>
                         </div>
-
 
                         {{-- Check if there are CPU's found --}}
                         @if(count($cpus) == 0)
@@ -318,8 +259,8 @@
 
 {{-- Double handle slider --}}
 <script 
-  type="text/javascript" 
-  src="https://cdn.jsdelivr.net/gh/maxshuty/accessible-web-components@latest/dist/simpleRange.min.js">
+    type="text/javascript" 
+    src="https://cdn.jsdelivr.net/gh/maxshuty/accessible-web-components@latest/dist/simpleRange.min.js">
 </script>
 
 <script>
@@ -327,6 +268,12 @@
     var price_min = document.getElementById("price_min");
     var price_max = document.getElementById("price_max");
     var core_min = document.getElementById("core_min");
+    var core_max = document.getElementById("core_max");
+    var tdp_min = document.getElementById("tdp_min");
+    var tdp_max = document.getElementById("tdp_max");
+    var filter_form = document.getElementById("filter_form");
+
+    
 
     // Price slider
     window.addEventListener('price_slider', (e) => {
@@ -401,49 +348,12 @@
                 else 
                 {
                     checkboxes[0].checked = false;
-                }  
+                }
 
-                form.submit();
+                // form.submit();
             });
         });
     }
-    
-
-
-    // // Manufacturer checkboxes
-    // var manufacturer_checkboxes = document.querySelectorAll('input[name="manufacturer[]"]');
-    // // If all is checked, uncheck the others on change
-    // for (var i = 0; i < manufacturer_checkboxes.length; i++) 
-    // {
-    //     manufacturer_checkboxes[i].addEventListener('change', function() 
-    //     {
-    //         if (this.value == 'all') 
-    //         {
-    //             for (var i = 0; i < manufacturer_checkboxes.length; i++) {
-    //                 if (manufacturer_checkboxes[i].value != 'all') 
-    //                 {
-    //                     manufacturer_checkboxes[i].checked = false;
-    //                 }
-    //             }
-    //         } 
-    //         else 
-    //         {
-    //             manufacturer_checkboxes[0].checked = false;
-    //         }
-
-            // // Check if any checkbox is checked, if not, check 'all'
-            // for (var i = 0; i < manufacturer_checkboxes.length; i++) {
-            //     if (manufacturer_checkboxes[i].checked) {
-            //         manufacturer_checkboxes[0].checked = false;
-            //         break;
-            //     } else {
-            //         manufacturer_checkboxes[0].checked = true;
-            //     }
-            // }
-
-    //         filter_form.submit();
-    //     });
-    // }
 
 </script>       
 
