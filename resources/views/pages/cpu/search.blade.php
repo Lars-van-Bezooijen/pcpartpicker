@@ -38,7 +38,7 @@
                                 <x-filters.checkbox filter_title="Sockets" filter_name="socket" :foreach_var="$sockets"/>
                                 
                                 {{-- Core count filter (slider) --}}
-                                <x-filters.slider filter_title="Core count" filter_slider_name="core_count_slider" filter_min_name="core_min" filter_max_name="core_max" lowest_number="{{ $lowestCoreCount }}" highest_number="{{ $highestCoreCount }}"/>
+                                <x-filters.slider filter_title="Core count" filter_slider_name="core_count_slider" filter_min_name="core_count_min" filter_max_name="core_count_max" lowest_number="{{ $lowestCoreCount }}" highest_number="{{ $highestCoreCount }}"/>
 
                                 {{-- TDP filter (slider) --}}
                                 <x-filters.slider filter_title="TDP" filter_slider_name="tdp_slider" filter_min_name="tdp_min" filter_max_name="tdp_max" lowest_number="{{ $lowestTdp }}" highest_number="{{ $highestTdp }}" label_after=" W"/>
@@ -179,10 +179,11 @@
 
 <script>
     
+    // Get all the elements
     var price_min = document.getElementById("price_min");
     var price_max = document.getElementById("price_max");
-    var core_min = document.getElementById("core_min");
-    var core_max = document.getElementById("core_max");
+    var core_count_min = document.getElementById("core_count_min");
+    var core_count_max = document.getElementById("core_count_max");
     var tdp_min = document.getElementById("tdp_min");
     var tdp_max = document.getElementById("tdp_max");
     var filter_form = document.getElementById("filter_form");
@@ -200,8 +201,8 @@
     // Core count slider
     window.addEventListener('core_count_slider', (e) => {
         const data = e.detail;
-        core_min.value = data.minRangeValue;
-        core_max.value = data.maxRangeValue;
+        core_count_min.value = data.minRangeValue;
+        core_count_max.value = data.maxRangeValue;
         filter_form.submit();
     });
 
@@ -247,6 +248,7 @@
     var socket_checkboxes = document.querySelectorAll('input[name="socket[]"]');
     addCheckboxEvent(socket_checkboxes, filter_form);
 
+    // Checkbox change event
     function addCheckboxEvent(checkboxes, form) {
         checkboxes.forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {

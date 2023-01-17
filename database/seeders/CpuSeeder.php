@@ -18,7 +18,7 @@ class CpuSeeder extends Seeder
         // AMD Threadripper 3990X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 5,
+            'serie_id' => 5,
             'socket_id' => 5,
             'name' => 'AMD Threadripper 3990X',
             'image' => 'threadripper-3990X.jpg',
@@ -35,7 +35,7 @@ class CpuSeeder extends Seeder
         // AMD Threadripper 3970X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 5,
+            'serie_id' => 5,
             'socket_id' => 5,
             'name' => 'AMD Threadripper 3970X',
             'image' => 'threadripper-3970X.jpg',
@@ -52,7 +52,7 @@ class CpuSeeder extends Seeder
         // AMD Threadripper 3960X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 5,
+            'serie_id' => 5,
             'socket_id' => 5,
             'name' => 'AMD Threadripper 3960X',
             'image' => 'threadripper-3960X.jpg',
@@ -69,7 +69,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 9 3950XT
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 4,
+            'serie_id' => 4,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 9 3950XT',
             'image' => 'ryzen-9-3950XT.jpg',
@@ -86,7 +86,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 9 3950X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 4,
+            'serie_id' => 4,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 9 3950X',
             'image' => 'ryzen-9-3950X.jpg',
@@ -103,7 +103,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 9 3900X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 4,
+            'serie_id' => 4,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 9 3900X',
             'image' => 'ryzen-9-3900X.jpg',
@@ -120,7 +120,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 7 3800XT
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 3,
+            'serie_id' => 3,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 7 3800XT',
             'image' => 'ryzen-7-3800XT.jpg',
@@ -137,7 +137,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 7 3800X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 3,
+            'serie_id' => 3,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 7 3800X',
             'image' => 'ryzen-7-3800X.jpg',
@@ -154,7 +154,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 7 3700X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 3,
+            'serie_id' => 3,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 7 3700X',
             'image' => 'ryzen-7-3700X.jpg',
@@ -171,7 +171,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 5 3600XT
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 2,
+            'serie_id' => 2,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 5 3600XT',
             'image' => 'ryzen-5-3600XT.jpg',
@@ -188,7 +188,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 5 3600X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 2,
+            'serie_id' => 2,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 5 3600X',
             'image' => 'ryzen-5-3600X.jpg',
@@ -205,7 +205,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 5 3600
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 2,
+            'serie_id' => 2,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 5 3600',
             'image' => 'ryzen-5-3600.jpg',
@@ -222,7 +222,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 3 3300X
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 1,
+            'serie_id' => 1,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 3 3300X',
             'image' => 'ryzen-3-3300X.jpg',
@@ -239,7 +239,7 @@ class CpuSeeder extends Seeder
         // AMD Ryzen 3 3100
         Cpu::create([
             'manufacturer_id' => 1,
-            'series_id' => 1,
+            'serie_id' => 1,
             'socket_id' => 5,
             'name' => 'AMD Ryzen 3 3100',
             'image' => 'ryzen-3-3100.jpg',
@@ -264,7 +264,7 @@ class CpuSeeder extends Seeder
         // Intel Core i9-9900KS
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 8,
+            'serie_id' => 9,
             'socket_id' => 2,
             'name' => 'Intel Core i9-9900KS',
             'image' => 'i9-9900KS.jpg',
@@ -281,7 +281,7 @@ class CpuSeeder extends Seeder
         // Intel Core i9-9900KF
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 8,
+            'serie_id' => 9,
             'socket_id' => 2,
             'name' => 'Intel Core i9-9900KF',
             'image' => 'i9-9900KF.jpg',
@@ -298,7 +298,7 @@ class CpuSeeder extends Seeder
         // Intel Core i9-9900K
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 8,
+            'serie_id' => 9,
             'socket_id' => 2,
             'name' => 'Intel Core i9-9900K',
             'image' => 'i9-9900K.jpg',
@@ -315,7 +315,7 @@ class CpuSeeder extends Seeder
         // Intel Core i9-9900
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 8,
+            'serie_id' => 9,
             'socket_id' => 2,
             'name' => 'Intel Core i9-9900',
             'image' => 'i9-9900.jpg',
@@ -332,7 +332,7 @@ class CpuSeeder extends Seeder
         // Intel Core i7-9700KF
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 8,
             'socket_id' => 2,
             'name' => 'Intel Core i7-9700KF',
             'image' => 'i7-9700kf.jpg',
@@ -349,7 +349,7 @@ class CpuSeeder extends Seeder
         // Intel Core i7-9700K
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 8,
             'socket_id' => 2,
             'name' => 'Intel Core i7-9700K',
             'image' => 'i7-9700k.jpg',
@@ -366,7 +366,7 @@ class CpuSeeder extends Seeder
         // Intel Core i7-9700F
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 8,
             'socket_id' => 2,
             'name' => 'Intel Core i7-9700F',
             'image' => 'i7-9700f.jpg',
@@ -383,7 +383,7 @@ class CpuSeeder extends Seeder
         // Intel Core i7-9700
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 8,
             'socket_id' => 2,
             'name' => 'Intel Core i7-9700',
             'image' => 'i7-9700.jpg',
@@ -400,7 +400,7 @@ class CpuSeeder extends Seeder
         // Intel Core i5-9600KF
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 7,
             'socket_id' => 2,
             'name' => 'Intel Core i5-9600',
             'image' => 'i5-9600.jpg',
@@ -417,7 +417,7 @@ class CpuSeeder extends Seeder
         // Intel Core i5-9600K
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 7,
             'socket_id' => 2,
             'name' => 'Intel Core i5-9600KF',
             'image' => 'i5-9600kf.jpg',
@@ -434,7 +434,7 @@ class CpuSeeder extends Seeder
         // Intel Core i5-9600
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 7,
             'socket_id' => 2,
             'name' => 'Intel Core i5-9600',
             'image' => 'i5-9600.jpg',
@@ -451,7 +451,7 @@ class CpuSeeder extends Seeder
         // Intel Core i5-9400F
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 7,
             'socket_id' => 2,
             'name' => 'Intel Core i5-9400F',
             'image' => 'i5-9400f.jpg',
@@ -468,7 +468,7 @@ class CpuSeeder extends Seeder
         // Intel Core i5-9400
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 7,
+            'serie_id' => 7,
             'socket_id' => 2,
             'name' => 'Intel Core i5-9400',
             'image' => 'i5-9400.jpg',
@@ -485,7 +485,7 @@ class CpuSeeder extends Seeder
         // Intel Core i3-9300
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 6,
+            'serie_id' => 6,
             'socket_id' => 2,
             'name' => 'Intel Core i3-9300',
             'image' => 'i3-9300.jpg',
@@ -502,7 +502,7 @@ class CpuSeeder extends Seeder
         // Intel Core i3-9100F
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 6,
+            'serie_id' => 6,
             'socket_id' => 2,
             'name' => 'Intel Core i3-9100F',
             'image' => 'i3-9100f.jpg',
@@ -519,7 +519,7 @@ class CpuSeeder extends Seeder
         // Intel Core i3-9100
         Cpu::create([
             'manufacturer_id' => 2,
-            'series_id' => 6,
+            'serie_id' => 6,
             'socket_id' => 2,
             'name' => 'Intel Core i3-9100',
             'image' => 'i3-9100.jpg',

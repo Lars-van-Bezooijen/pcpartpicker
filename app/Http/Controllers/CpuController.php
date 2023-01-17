@@ -24,9 +24,9 @@ class CpuController extends Controller
         $query =  DB::table('cpus');
 
         // Get all manufacturers, series and sockets
-        $manufacturers = CpuManufacturer::all();
-        $series = CpuSeries::all();
-        $sockets = CpuSockets::all();
+        $manufacturers = CpuManufacturer::orderBy('name', 'asc')->get();
+        $series = CpuSeries::orderBy('name', 'asc')->get();
+        $sockets = CpuSockets::orderBy('name', 'asc')->get();
 
         // Get cheapest and most expensive CPU prices
         $lowestPrice = Cpu::orderBy('price', 'asc')->first();
@@ -42,8 +42,6 @@ class CpuController extends Controller
         $highestTdp = Cpu::orderBy('tdp', 'desc')->first();
         $lowestTdp = Cpu::orderBy('tdp', 'asc')->first();
 
-
-
         // 
         // ALL FILTERS
         //
@@ -55,20 +53,80 @@ class CpuController extends Controller
             extendQueryWhere($query, 'name', 'LIKE', '%'.$search.'%');
         }
 
+        // Slider filters
+        $sliderFilters = [
+            'price',
+            'core_count',
+            'tdp',
+        ];
 
+        foreach($sliderFilters as $filter)
+        {
+            if(checkGetRequest($filter.'_min'))
+            {
+                $min = $_GET[$filter.'_min'];
+                extendQueryWhere($query, $filter, '>=', $min);
+            }
+            if(checkGetRequest($filter.'_max'))
+            {
+                $max = $_GET[$filter.'_max'];
+                extendQueryWhere($query, $filter, '<=', $max);
+            }
+        }
 
+        // Checkbox filters
+        $checkboxFilters = [
+            'manufacturer',
+            'serie',
+            'socket',
+        ];
 
+        foreach($checkboxFilters as $filter)
+        {
+            if(checkGetRequest($filter))
+            {
+                $currentFilter = $_GET[$filter];
+                $currentFilterArray = [];
 
+                foreach($currentFilter as $cf)
+                {
+                    $currentFilterArray[] = $cf;
+                }
 
+                if(!in_array('all', $currentFilterArray))
+                {
+                    extendQueryWhereIn($query, $filter.'_id', $currentFilterArray);
+                }
+            }
+        }
 
+        // Radio filters
+        $radioFilters = [
+            'smt',
+            'integrated_graphics',
+        ];
+
+        foreach($radioFilters as $filter)
+        {
+            if(checkGetRequest($filter))
+            {
+                $value = $_GET[$filter];
+                if($value == 'yes')
+                {
+                    extendQueryWhere($query, $filter, '=', 1);
+                }
+                else if($value == 'no')
+                {
+                    extendQueryWhere($query, $filter, '=', 0);
+                }
+            }
+        }
 
         //
         // Execute query
         //
 
         $cpus = $query->get();
-
-
 
         //
         // RETURN VIEW
@@ -91,9 +149,6 @@ class CpuController extends Controller
         ]);
     }
 
-
-
-
     //
     // SHOW SPECIFIC CPU
     //
@@ -101,6 +156,7 @@ class CpuController extends Controller
     public function cpu_show($id)
     {
         $cpu = Cpu::find($id);
+
         return view('pages.cpu.show', [
             'cpu' => $cpu
         ]);
@@ -110,18 +166,21 @@ class CpuController extends Controller
 
 
 
+
+
 // Function to check if GET request is set
 function checkGetRequest($name)
 {
-    if(isset($_GET[$name]))
+    if(isset($_GET[$name]) && $_GET[$name] != '')
     {
-        return $_GET[$name];
+        return true;
     }
     else
     {
-        return null;
+        return false;
     }
 }
+// -----------------------------------------------------------------------------
 
 // Function to extend the sql query with a new filter
 function extendQueryWhere($query, $name, $operator, $value)
@@ -130,4 +189,13 @@ function extendQueryWhere($query, $name, $operator, $value)
     return $query;
 }
 
+// -----------------------------------------------------------------------------
 
+// Function to filter by array with whereIn
+function extendQueryWhereIn($query, $column, $array)
+{
+    $query = $query->whereIn($column, $array);
+    return $query;
+}
+
+// -----------------------------------------------------------------------------

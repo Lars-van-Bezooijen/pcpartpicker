@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('manufacturer_id')
                 ->references('id')
                 ->on('cpu_manufacturers');
-            $table->foreignId('series_id')
+            $table->foreignId('serie_id')
                 ->references('id')
                 ->on('cpu_series');
             $table->foreignId('socket_id')
