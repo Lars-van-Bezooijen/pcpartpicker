@@ -26,7 +26,7 @@
                                 <button type="submit" class="mb-2 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Apply filter</button>
 
                                 {{-- Price (slider) --}}
-                                <x-filters.slider filter_title="Price" filter_slider_name="price_slider" filter_min_name="price_min" filter_max_name="price_max" lowest_number="{{ $cheapestCpu }}" highest_number="{{ $mostExpensiveCpu }}" label_before="€"/>
+                                <x-filters.slider filter_title="Price" filter_slider_name="price_slider" filter_min_name="price_min" filter_max_name="price_max" lowest_number="{{ $lowestPrice }}" highest_number="{{ $highestPrice }}" label_before="€"/>
 
                                 {{-- Manufacturer filter --}}
                                 <x-filters.checkbox filter_title="Manufacturers" filter_name="manufacturer" :foreach_var="$manufacturers"/>
