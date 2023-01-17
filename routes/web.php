@@ -21,10 +21,8 @@ use App\Http\Controllers\CpuController;
 Route::get('/builder', [BuilderController::class, 'builder'])->name('builder');
 
 Route::get('/products/cpu', [CpuController::class, 'cpu_search'])->name('products.cpu.search');
+Route::get('/products/cpu/create', [CpuController::class, 'cpu_create'])->name('products.cpu.create');
 Route::get('/products/cpu/{id}', [CpuController::class, 'cpu_show'])->name('products.cpu.show');
-
-Route::get('/products/cpu/{id}/test', [CpuController::class, 'cpu_show_test'])->name('products.cpu.show.test');
-
 
 Route::get('/products/cpu/add/{id}', [BuilderController::class, 'cpu_add'])->name('builder.cpu.add');
 Route::get('/products/cpu/remove/{id}', [BuilderController::class, 'cpu_remove'])->name('builder.cpu.remove');

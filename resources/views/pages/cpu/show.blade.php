@@ -26,4 +26,4 @@
     ];
 @endphp
 
-<x-crud.create product="cpu" product_image="{{ $cpu->image }}" product_price="{{ $cpu->price }}" product_name="{{ $cpu->name }}" product_details_amount="10" :product_details_titles="$product_titles" :product_details="$product_details"/>
+<x-crud.show product="cpu" product_image="{{ $cpu->image }}" product_price="{{ $cpu->price }}" product_name="{{ $cpu->name }}" product_details_amount="10" :product_details_titles="$product_titles" :product_details="$product_details"/>

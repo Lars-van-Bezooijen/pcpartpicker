@@ -163,12 +163,20 @@ class CpuController extends Controller
         ]);
     }
 
-    public function cpu_show_test($id)
-    {
-        $cpu = Cpu::find($id);
+    //
+    // CREATE CPU
+    //
 
-        return view('pages.cpu.show_test', [
-            'cpu' => $cpu
+    public function cpu_create()
+    {
+        $manufacturers = CpuManufacturer::orderBy('name', 'asc')->get();
+        $series = CpuSeries::orderBy('name', 'asc')->get();
+        $sockets = CpuSockets::orderBy('name', 'asc')->get();
+
+        return view('pages.cpu.create', [
+            'manufacturers' => $manufacturers,
+            'series' => $series,
+            'sockets' => $sockets,
         ]);
     }
 

@@ -1,12 +1,7 @@
 @props([
-    'product',
-    'product_image',
-    'product_price',
-    'product_name',
-    'product_details_amount',
-    'product_details_titles' => [],
-    'product_details' => [],
-
+    'title',
+    'amount_of_inputs',
+    'input_names' => [],
 ])
 
 {{-- Header --}}
@@ -19,31 +14,27 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-white">
-                
-                {{-- Product Image and Name --}}
-                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <div class="w-full text-center">
-                        <img class="w-1/4 mx-auto" src="{{ asset('img/products/' . $product . '/' . $product_image) }}" alt="">
-                        <p class="mt-2">€{{ number_format($product_price, 2, ',', '.') }}</p>
-                        <h1 class="mb-8 text-3xl font-bold">{{ $product_name }}</h1>
-                    </div>                    
-                </div>
+                <form action="" method="POST">
+                    @csrf
+                    {{-- dark mode inputs --}}
+                    <div class="bg-gray-800 p-4 rounded-md">
+                        <h1 class="mb-8 text-3xl font-bold">Add your {{ $title }}</h1>
+                        <div class="grid grid-cols-2 gap-8 gap-x-24">
+                            {{-- Product details --}}
+                            @for($i = 1; $i <= $amount_of_inputs; $i++)
+                                
+                                <div>
+                                    <label for="email" class="block mb-2 text-sm font-medium text-white">Input name</label>
+                                    <div class="relative">
+                                        <input type="text" id="email" name="email" class="bg-gray-700 border border-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full mb-4 p-2.5 placeholder-gray-400 text-white" placeholder="">
+                                    </div>
+                                </div>
 
-                {{-- Product information --}}
-                <div class="grid grid-cols-2 gap-8">
+                            @endfor
 
-                    {{-- Product details --}}
-                    @for($i = 1; $i <= $product_details_amount; $i++)
-                        
-                        <div @if($i % 2 != 0) class="text-end" @endif>
-                            <div class="border-b border-gray-700">
-                                <p class="text-gray-400">{{ $product_details_titles[$i] }}</p>
-                                <p class="text-xl font-bold mb-2">{{ $product_details[$i] }}</p>
-                            </div>
                         </div>
-
-                    @endfor
-                </div>
+                    </div>
+                </form>
 
             </div>
         </div>
