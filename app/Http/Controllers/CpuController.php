@@ -126,6 +126,7 @@ class CpuController extends Controller
         // Execute query
         //
 
+        $query = $query->orderBy('created_at', 'desc');
         $cpus = $query->get();
 
         //
@@ -158,6 +159,15 @@ class CpuController extends Controller
         $cpu = Cpu::find($id);
 
         return view('pages.cpu.show', [
+            'cpu' => $cpu
+        ]);
+    }
+
+    public function cpu_show_test($id)
+    {
+        $cpu = Cpu::find($id);
+
+        return view('pages.cpu.show_test', [
             'cpu' => $cpu
         ]);
     }

@@ -65,8 +65,11 @@
 
                         {{-- Information --}}
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                            <div class="flex items-end">
+                            <div class="">
                                 <h1 class="text-3xl font-bold">List of CPU's</h1>
+                                @if(count($cpus) > 0)
+                                    <p class="text-gray-400">Found {{ count($cpus) }} products with your current filters.</p>
+                                @endif
                             </div>
                         </div>
 
@@ -119,7 +122,7 @@
                                         <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-700">
                                             <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap text-white font-bold w-80">
                                                 <div class="flex items-center">
-                                                    <img src="{{ asset('img/products/' . $cpu->image) }}" alt="" class="w-12 mr-2">
+                                                    <img src="{{ asset('img/products/cpu/' . $cpu->image) }}" alt="" class="w-12 mr-2">
                                                     <a class="hover:text-blue-500 hover:underline" href="{{ route('products.cpu.show', $cpu->id) }}">{{ $cpu->name }}</a>
                                                 </div>
                                             </th>

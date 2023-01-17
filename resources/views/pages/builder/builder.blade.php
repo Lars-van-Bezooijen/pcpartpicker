@@ -38,7 +38,7 @@
                                 <td class="py-4 px-6 font-medium whitespace-nowrap text-white font-bold">
                                     @if (isset($sessionProducts['cpu']))
                                         <div class="flex items-center">
-                                            <img class="w-12 mr-2" src="{{ asset('img/products/' . $sessionProducts['cpu']['image']) }}" alt="">
+                                            <img class="w-12 mr-2" src="{{ asset('img/products/cpu/' . $sessionProducts['cpu']['image']) }}" alt="">
                                             <a class="hover:text-blue-500 hover:underline" href="{{ route('products.cpu.show', $sessionProducts['cpu']['id']) }}">{{ $sessionProducts['cpu']['name'] }}</a>
                                         </div>
                                     @else

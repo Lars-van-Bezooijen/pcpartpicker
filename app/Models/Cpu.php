@@ -22,7 +22,7 @@ class Cpu extends Model
 
     public function series()
     {
-        return $this->belongsTo(CpuSeries::class, 'series_id');
+        return $this->belongsTo(CpuSeries::class, 'serie_id');
     }
 
     public function socket()
