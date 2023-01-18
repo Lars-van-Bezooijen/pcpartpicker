@@ -81,6 +81,15 @@
                                 <p>Try to change your filters</p>
                             </div>
                         @else
+
+                        {{-- Success message --}}
+                        @if(session('success'))
+                            <div class="bg-green-500 text-white p-4 rounded-md mb-4">
+                                <p class="font-bold text-2xl">Success!</p>
+                                <p>{{ session('success') }}</p>
+                            </div>
+                        @endif
+
                         {{-- Table of parts --}}
                         <div class="overflow-x-auto relative rounded-md">
                             <table class="w-full text-sm text-left text-gray-400">
@@ -161,13 +170,15 @@
                                                     Select CPU
                                                 </a>
                                             </td>
-                                            @if(Auth::user()->is_admin == true)
-                                                <td class="font-medium whitespace-nowrap text-white w-60">
-                                                    <a class="font-bold text-blue-500 hover:text-white hover:underline" href="{{ route('products.cpu.edit', $cpu->id) }}">
-                                                        Edit
-                                                    </a>
-                                                </td>
-                                            @endif
+                                            @auth
+                                                @if(Auth::user()->is_admin == true)
+                                                    <td class="font-medium whitespace-nowrap text-white w-60">
+                                                        <a class="font-bold text-blue-500 hover:text-white hover:underline" href="{{ route('products.cpu.edit', $cpu->id) }}">
+                                                            Edit
+                                                        </a>
+                                                    </td>
+                                                @endif
+                                            @endauth
                                         </tr>
                                     @endforeach
                                 </tbody>

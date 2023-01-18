@@ -195,7 +195,7 @@ class CpuController extends Controller
             'price' => 'required|numeric|min:0',
             'core_count' => 'required|numeric|min:0',
             'core_clock' => 'required|numeric|min:0',
-            'boost_clock' => 'required|numeric|min:core_clock',
+            'boost_clock' => 'required|numeric|min:0',
             'tdp' => 'required|numeric|min:0',
             'smt' => 'required|numeric|min:0|max:1',
             'integrated_graphics' => 'required|numeric|min:0|max:1',
@@ -247,6 +247,23 @@ class CpuController extends Controller
             'series' => $series,
             'sockets' => $sockets,
         ]);
+    }
+
+    //
+    // EDIT CPU POST
+    //
+
+
+    //
+    // DELETE CPU
+    //
+
+    public function cpu_delete($id)
+    {
+        $cpu = Cpu::find($id);
+        $cpu->delete();
+
+        return redirect('products/cpu')->with('success', 'CPU deleted successfully');
     }
 
 }

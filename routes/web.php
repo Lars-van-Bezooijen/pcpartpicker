@@ -24,6 +24,7 @@ Route::get('/products/cpu', [CpuController::class, 'cpu_search'])->name('product
 Route::get('/products/cpu/create', [CpuController::class, 'cpu_create'])->name('products.cpu.create');
 Route::post('/products/cpu/create', [CpuController::class, 'cpu_create_post'])->name('products.cpu.create_post');
 Route::get('/products/cpu/edit/{id}', [CpuController::class, 'cpu_edit'])->name('products.cpu.edit');
+Route::delete('/products/cpu/delete/{id}', [CpuController::class, 'cpu_delete'])->name('products.cpu.delete');
 Route::get('/products/cpu/{id}', [CpuController::class, 'cpu_show'])->name('products.cpu.show');
 
 Route::get('/products/cpu/add/{id}', [BuilderController::class, 'cpu_add'])->name('builder.cpu.add');
