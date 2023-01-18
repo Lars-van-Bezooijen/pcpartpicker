@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'avatar' => ['image', 'mimes:jpeg,png,jpg,svg', 'max:2048'],
+            'avatar' => ['image', 'mimes:jpeg,png,jpg,svg,webp', 'max:2048'],
         ]);
 
         // Get users location
