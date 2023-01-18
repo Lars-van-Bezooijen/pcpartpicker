@@ -113,6 +113,7 @@
                                             Price
                                         </th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -160,6 +161,13 @@
                                                     Select CPU
                                                 </a>
                                             </td>
+                                            @if(Auth::user()->is_admin == true)
+                                                <td class="font-medium whitespace-nowrap text-white w-60">
+                                                    <a class="font-bold text-blue-500 hover:text-white hover:underline" href="{{ route('products.cpu.edit', $cpu->id) }}">
+                                                        Edit
+                                                    </a>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

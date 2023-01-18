@@ -229,6 +229,26 @@ class CpuController extends Controller
         return redirect('products/cpu/'.$cpu->id);
     }
 
+    //
+    // EDIT CPU
+    //
+
+    public function cpu_edit($id)
+    {
+        $cpu = Cpu::find($id);
+
+        $manufacturers = CpuManufacturer::orderBy('name', 'asc')->get();
+        $series = CpuSeries::orderBy('name', 'asc')->get();
+        $sockets = CpuSockets::orderBy('name', 'asc')->get();
+
+        return view('pages.cpu.edit', [
+            'cpu' => $cpu,
+            'manufacturers' => $manufacturers,
+            'series' => $series,
+            'sockets' => $sockets,
+        ]);
+    }
+
 }
 
 
