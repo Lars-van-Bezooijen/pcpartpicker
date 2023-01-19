@@ -235,6 +235,7 @@ class CpuController extends Controller
 
     public function cpu_edit($id)
     {
+
         $cpu = Cpu::find($id);
 
         $manufacturers = CpuManufacturer::orderBy('name', 'asc')->get();
@@ -253,6 +254,53 @@ class CpuController extends Controller
     // EDIT CPU POST
     //
 
+    public function cpu_edit_post(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'name' => 'required',
+            'manufacturer' => 'required|numeric|min:0',
+            'serie' => 'required|numeric|min:0',
+            'socket' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+            'core_count' => 'required|numeric|min:0',
+            'core_clock' => 'required|numeric|min:0',
+            'boost_clock' => 'required|numeric|min:0',
+            'tdp' => 'required|numeric|min:0',
+            'smt' => 'required|numeric|min:0|max:1',
+            'integrated_graphics' => 'required|numeric|min:0|max:1',
+            'has_cooler' => 'required|numeric|min:0|max:1',
+        ]);
+
+        $cpu = Cpu::find($id);
+
+        if($request->image != null)
+        {
+            // Get image name and extension
+            $imageName = time().'.'.$request->image->extension();
+            // Move image to public folder
+            $request->image->move(public_path('img/products/cpu'), $imageName);
+
+            $cpu->image = $imageName;
+        }
+
+        $cpu->name = $_POST['name'];
+        $cpu->manufacturer_id = $_POST['manufacturer'];
+        $cpu->serie_id = $_POST['serie'];
+        $cpu->socket_id = $_POST['socket'];
+        $cpu->price = $_POST['price'];
+        $cpu->core_count = $_POST['core_count'];
+        $cpu->core_clock = $_POST['core_clock'];
+        $cpu->boost_clock = $_POST['boost_clock'];
+        $cpu->tdp = $_POST['tdp'];
+        $cpu->smt = $_POST['smt'];
+        $cpu->integrated_graphics = $_POST['integrated_graphics'];
+        $cpu->has_cooler = $_POST['has_cooler'];
+
+        $cpu->save();
+
+        return redirect('products/cpu/')->with('success', 'CPU updated successfully');
+    }
 
     //
     // DELETE CPU
